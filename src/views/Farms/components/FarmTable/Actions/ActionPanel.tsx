@@ -7,6 +7,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
 import { getBscScanLink } from 'utils'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
 
 import HarvestAction from './HarvestAction'
 import StakedAction from './StakedAction'
@@ -157,7 +158,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
       <InfoContainer>
         {isActive && (
           <StakeContainer>
-            <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
+            <StyledLinkExternal href={`${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`}>
               {t('Get %symbol%', { symbol: lpLabel })}
             </StyledLinkExternal>
           </StakeContainer>
