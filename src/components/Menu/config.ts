@@ -34,18 +34,9 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     href: '/pools',
   },
   {
-    label: t('Info'),
-    icon: 'InfoIcon',
-    href: 'https://pancakeswap.info',
-  },
-  {
     label: 'Charts',
     icon: 'InfoIcon',
     items: [
-      {
-        label: 'QuickChart',
-        href: 'https://quickchart.app/token/0x4523e85C144DE8Dd60acEc335bfC95fa87779D7C',
-      },
       // {
       //  label: 'PolyChart',
       //  href: 'https://app.polychart.io/explorer/polygon/0x8c79d1ccb5e5ea4df5e0ff14b59a305f2808ac93',
@@ -65,20 +56,24 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     icon: 'MoreIcon',
     items: [
       {
-        label: t('Contact'),
-        href: 'https://docs.pancakeswap.finance/contact-us',
+        label: t('Contracts'),
+        href: 'https://docs.rainbowfarm.finance/contract'
+      },
+      {
+        label: t('Roadmap'),
+        href: 'https://docs.rainbowfarm.finance/roadmap'
       },
       {
         label: t('Github'),
-        href: 'https://github.com/pancakeswap',
+        href: 'https://github.com/rainbowfarm',
       },
       {
         label: t('Docs'),
-        href: 'https://docs.pancakeswap.finance',
+        href: 'https://docs.rainbowfarm.finance',
       },
       {
-        label: t('Blog'),
-        href: 'https://pancakeswap.medium.com',
+        label: t('Contact'),
+        href: 'https://docs.rainbowfarm.finance/about/developer',
       },
     ],
   },
