@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Text, BaseLayout } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, BaseLayout, Image } from '@pancakeswap/uikit'
 import PageSection from 'components/PageSection'
 import Page from 'components/Layout/Page'
 import { useWeb3React } from '@web3-react/core'
@@ -25,6 +25,14 @@ const Hero = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
   }
 `
+
+
+const StyledImage = styled(Image)`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 58px;
+`
+
 
 const Cards = styled(BaseLayout)`
   align-items: stretch;
@@ -74,6 +82,7 @@ const Home: React.FC = () => {
           <TotalValueLockedCard />
         </Cards>
       </div>
+      <StyledImage src="/images/logo/rainbow_icon.png" alt="Shining Rainbow" width={226} height={129} />
       </Page>
     </>
   )

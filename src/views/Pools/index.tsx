@@ -46,6 +46,12 @@ const PoolControls = styled.div`
   }
 `
 
+const StyledImage = styled(Image)`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 58px;
+`
+
 const FilterContainer = styled.div`
   display: flex;
   align-items: center;
@@ -215,17 +221,15 @@ const Pools: React.FC = () => {
 
   return (
     <>
-      <PageHeader>
+      <PageHeader background="#544FA4">
+      <img src= "/images/logo/rainbowfarmlogotext.png" alt="Rainbow Farm Finance logo" />        
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" scale="xxl" color="black" mb="24px">
-              {t('Earning Pools')}
+            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
+              {t('Pools')}
             </Heading>
-            <Heading scale="md" color="black">
+            <Heading scale="md" color="secondary">
               {t('Stake tokens to earn RNBO.')}
-            </Heading>
-            <Heading scale="md" color="black">
-              {t('Low Fees, High APR.')}
             </Heading>
           </Flex>
         </Flex>
@@ -288,6 +292,7 @@ const Pools: React.FC = () => {
         )}
         {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
         <div ref={loadMoreRef} />
+        <StyledImage src="/images/logo/rainbow_icon.png" alt="Shining Rainbow" width={226} height={129} />
       </Page>
     </>
   )

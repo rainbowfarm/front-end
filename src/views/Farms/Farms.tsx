@@ -382,12 +382,13 @@ const Farms: React.FC = () => {
 
   return (
     <>
-      <PageHeader background="#9400D3">
-        <Heading as="h2" scale="xxl" color="secondary" mb="24px">
+      <PageHeader background="#544FA4">
+      <img src= "/images/logo/rainbowfarmlogotext.png" alt="Rainbow Farm Finance logo" />        
+      <Heading as="h2" scale="xxl" color="secondary" mb="24px">
           {t('Farms')}
         </Heading>
-        <Heading scale="lg" color="text">
-          {t('Stake LP tokens to earn.')}
+        <Heading scale="lg" color="secondary">
+          {t('Stake LP tokens to earn RNBO.')}
         </Heading>
       </PageHeader>
       <Page>
@@ -442,7 +443,7 @@ const Farms: React.FC = () => {
           </Flex>
         )}
         <div ref={loadMoreRef} />
-        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+        <StyledImage src="/images/logo/rainbow_icon.png" alt="Shining Rainbow" width={226} height={129} />
       </Page>
     </>
   )
