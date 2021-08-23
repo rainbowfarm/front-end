@@ -28,10 +28,10 @@ const CakeStats = () => {
   const totalSupply = useTotalSupply()
   const burnedBalance = useBurnedBalance(getCakeAddress())
   const farms = useFarms();
-  const iridPrice = usePriceCakeBusd();
+  const RNBOPrice = usePriceCakeBusd();
   const circSupply = totalSupply ? totalSupply.minus(burnedBalance) : new BigNumber(0);
   const cakeSupply = getBalanceNumber(circSupply);
-  const marketCap = iridPrice.times(circSupply);
+  const marketCap = RNBOPrice.times(circSupply);
 
   let rewardPerBlock = 0;
   if(farms && farms[0] && farms[0].dual.rewardPerBlock){
@@ -61,7 +61,7 @@ const CakeStats = () => {
           <Text bold fontSize="14px">{t('30 M')}</Text>
         </Row>
         <Row>
-          <Text fontSize="14px">{t('New IRID/block')}</Text>
+          <Text fontSize="14px">{t('New RNBO/block')}</Text>
           <Text bold fontSize="14px">{t('4')}</Text>
         </Row>
       </CardBody>

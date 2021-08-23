@@ -2674,10 +2674,10 @@
     "tiny-warning" "^1.0.3"
     "toformat" "^2.0.0"
 
-"@pancakeswap/uikit@npm:rainbowfarmfinance-uikit@^0.2.3":
-  "integrity" "sha512-LjciQvCTcOSHF3QP9KFC6yUEb+GWoLiiZxQ/1EJtAHSIReNL6imHA+OPG4scR0RdolDfL+/RHtf+qh8c5grBEQ=="
-  "resolved" "https://registry.npmjs.org/rainbowfarmfinance-uikit/-/rainbowfarmfinance-uikit-0.2.3.tgz"
-  "version" "0.2.3"
+"@pancakeswap/uikit@npm:rainbowfarmfinance-uikit@^0.2.8":
+  "integrity" "sha512-5MUeva5J6CRxIsHXV1CvODYWAjNWgavBUyU0mWflnHQfEPLOrN5T6lK2471DheDqttOYhtag98B2HszBU5zfCg=="
+  "resolved" "https://registry.npmjs.org/rainbowfarmfinance-uikit/-/rainbowfarmfinance-uikit-0.2.8.tgz"
+  "version" "0.2.8"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"

@@ -16,6 +16,22 @@ export const CAKE: { [chainId: number]: Token } = {
     'PancakeSwap Token',
   ),
 }
+export const RNBO: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+    18,
+    'RNBO',
+    'RainbowFarm Token',
+  ),
+  [ChainId.TESTNET]: new Token(
+    ChainId.TESTNET,
+    '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+    18,
+    'RNBO',
+    'RainbowFarm Token',
+  ),
+}
 export const BUSD: { [chainId: number]: Token } = {
   [ChainId.MAINNET]: new Token(
     ChainId.MAINNET,
@@ -72,6 +88,15 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
+  },
+  rnbo: {
+    symbol: 'RNBO',
+    address: {
+      56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+    },
+    decimals: 18,
+    projectLink: 'https://rainbowfarm.finance/',
   },
   revv: {
     symbol: 'REVV',

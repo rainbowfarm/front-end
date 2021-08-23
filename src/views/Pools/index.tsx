@@ -19,10 +19,7 @@ import Select, { OptionProps } from 'components/Select/Select'
 import { Pool } from 'state/types'
 import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
-import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
-import BountyCard from './components/BountyCard'
-import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { ViewMode } from './components/ToggleView/ToggleView'
 import { getAprData, getCakeVaultEarnings } from './helpers'
@@ -99,8 +96,7 @@ const Pools: React.FC = () => {
 
   const pools = useMemo(() => {
     const cakePool = poolsWithoutAutoVault.find((pool) => pool.sousId === 0)
-    const cakeAutoVault = { ...cakePool, isAutoVault: true }
-    return [cakeAutoVault, ...poolsWithoutAutoVault]
+    return [...poolsWithoutAutoVault]
   }, [poolsWithoutAutoVault])
 
   // TODO aren't arrays in dep array checked just by reference, i.e. it will rerender every time reference changes?
@@ -108,22 +104,16 @@ const Pools: React.FC = () => {
   const stakedOnlyFinishedPools = useMemo(
     () =>
       finishedPools.filter((pool) => {
-        if (pool.isAutoVault) {
-          return accountHasVaultShares
-        }
         return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
       }),
-    [finishedPools, accountHasVaultShares],
+    [finishedPools],
   )
   const stakedOnlyOpenPools = useMemo(
     () =>
       openPools.filter((pool) => {
-        if (pool.isAutoVault) {
-          return accountHasVaultShares
-        }
         return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
       }),
-    [openPools, accountHasVaultShares],
+    [openPools],
   )
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
 
@@ -180,22 +170,14 @@ const Pools: React.FC = () => {
             if (!pool.userData || !pool.earningTokenPrice) {
               return 0
             }
-            return pool.isAutoVault
-              ? getCakeVaultEarnings(
-                  account,
-                  cakeAtLastUserAction,
-                  userShares,
-                  pricePerFullShare,
-                  pool.earningTokenPrice,
-                ).autoUsdToDisplay
-              : pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
+            return pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
           },
           'desc',
         )
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.isAutoVault ? totalCakeInVault.toNumber() : pool.totalStaked.toNumber()),
+          (pool: Pool) => (pool.totalStaked.toNumber()),
           'desc',
         )
       default:
@@ -223,11 +205,8 @@ const Pools: React.FC = () => {
   const cardLayout = (
     <CardLayout>
       {chosenPools.map((pool) =>
-        pool.isAutoVault ? (
-          <CakeVaultCard key="auto-cake" pool={pool} showStakedOnly={stakedOnly} />
-        ) : (
           <PoolCard key={pool.sousId} pool={pool} account={account} />
-        ),
+        ,
       )}
     </CardLayout>
   )
@@ -239,19 +218,15 @@ const Pools: React.FC = () => {
       <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Syrup Pools')}
+            <Heading as="h1" scale="xxl" color="black" mb="24px">
+              {t('Earning Pools')}
             </Heading>
-            <Heading scale="md" color="text">
-              {t('Just stake some tokens to earn.')}
+            <Heading scale="md" color="black">
+              {t('Stake tokens to earn RNBO.')}
             </Heading>
-            <Heading scale="md" color="text">
-              {t('High APR, low risk.')}
+            <Heading scale="md" color="black">
+              {t('Low Fees, High APR.')}
             </Heading>
-          </Flex>
-          <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
-            <HelpButton />
-            <BountyCard />
           </Flex>
         </Flex>
       </PageHeader>
@@ -313,14 +288,6 @@ const Pools: React.FC = () => {
         )}
         {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
         <div ref={loadMoreRef} />
-        <Image
-          mx="auto"
-          mt="12px"
-          src="/images/decorations/3d-syrup-bunnies.png"
-          alt="Pancake illustration"
-          width={192}
-          height={184.5}
-        />
       </Page>
     </>
   )
