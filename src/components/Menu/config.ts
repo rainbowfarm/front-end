@@ -13,15 +13,13 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('Exchange'),
-        href: '/swap',
+        href: 'https://pancakeswap.finance/swap',
+        target: "_blank",
       },
       {
         label: t('Liquidity'),
-        href: '/pool',
-      },
-      {
-        label: t('LP Migration'),
-        href: 'https://v1exchange.pancakeswap.finance/#/migrate',
+        href: 'https://pancakeswap.finance/liquidity',
+        target: "_blank",
       },
     ],
   },
