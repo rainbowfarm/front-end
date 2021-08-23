@@ -41,18 +41,9 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const isManualCakePool = sousId === 0
 
   const showStakedTag = isAutoVault ? hasVaultShares : isStaked
-
-  let title = `${t('Earn')} ${earningTokenSymbol}`
-  let subtitle = `${t('Stake')} ${stakingTokenSymbol}`
+  const title = `${t('Earn')} ${earningTokenSymbol}`
+  const subtitle = `${t('Stake')} ${stakingTokenSymbol}`
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isXs && !isSm)
-
-  if (isAutoVault) {
-    title = t('Auto CAKE')
-    subtitle = t('Automatic restaking')
-  } else if (isManualCakePool) {
-    title = t('Manual CAKE')
-    subtitle = `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`
-  }
 
   return (
     <StyledCell role="cell">

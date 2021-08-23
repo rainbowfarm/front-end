@@ -24,25 +24,11 @@ const StyledCardHeader: React.FC<{
   const background = isStaking ? 'bubblegum' : 'cardHeader'
 
   const getHeadingPrefix = () => {
-    if (isAutoVault) {
-      // vault
-      return t('Auto')
-    }
-    if (isCakePool) {
-      // manual cake
-      return t('Manual')
-    }
     // all other pools
     return t('Earn')
   }
 
   const getSubHeading = () => {
-    if (isAutoVault) {
-      return t('Automatic restaking')
-    }
-    if (isCakePool) {
-      return t('Earn CAKE, stake CAKE')
-    }
     return t('Stake %symbol%', { symbol: stakingToken.symbol })
   }
 

@@ -83,7 +83,7 @@ const FarmedStakingCard = () => {
         <Heading size="xl" mb="24px">
           {t('Farms & Staking')}
         </Heading>
-        <CardImage src="/images/logo/home-page-farms-stake.jpg" alt="rainbow logo" width={64} height={64} />
+        <CardImage src="/images/logo/home-page-farms-stake.png" alt="rainbow logo" width={64} height={64} />
         <Block>
           <Label>{t('RNBO to Harvest')}</Label>
           <CakeHarvestBalance earningsSum={earningsSum}/>

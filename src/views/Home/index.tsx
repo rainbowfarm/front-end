@@ -58,7 +58,7 @@ const Home: React.FC = () => {
     <>
     <Page>
       <Hero>
-        <img src= "/images/TitleBar.png" alt="Rainbow Farm Finance logo" width={570} height={75} />
+        <img src= "/images/logo/rainbowfarmlogotext.png" alt="Rainbow Farm Finance logo" />
         <Heading as="h1" scale="lg" mt="40px" mb="24px" color="secondary">          
         {t('Defi Yield Farming with lowest fees')}
         </Heading>

@@ -109,12 +109,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           {totalStakedTooltipVisible && totalStakedTooltip}
         </Flex>
       </Flex>
-      {stakingLimit && stakingLimit.gt(0) && (
-        <Flex mb="2px" justifyContent="space-between">
-          <Text small>{t('Max. stake per user')}:</Text>
-          <Text small>{`${getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0)} ${stakingToken.symbol}`}</Text>
-        </Flex>
-      )}
       {shouldShowBlockCountdown && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           <Text small>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
@@ -131,19 +125,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           ) : (
             <Skeleton width="54px" height="21px" />
           )}
-        </Flex>
-      )}
-      {isAutoVault && (
-        <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          {tooltipVisible && tooltip}
-          <TooltipText ref={targetRef} small>
-            {t('Performance Fee')}
-          </TooltipText>
-          <Flex alignItems="center">
-            <Text ml="4px" small>
-              {performanceFee / 100}%
-            </Text>
-          </Flex>
         </Flex>
       )}
       <Flex mb="2px" justifyContent="flex-end">

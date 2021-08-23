@@ -11,7 +11,6 @@ import UserMenu from './UserMenu'
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
-  const { profile } = useProfile()
   const { currentLanguage, setLanguage, t } = useTranslation()
 
   return (
@@ -24,13 +23,6 @@ const Menu = (props) => {
       setLang={setLanguage}
       cakePriceUsd={cakePriceUsd.toNumber()}
       links={config(t)}
-      profile={{
-        username: profile?.username,
-        image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
-        profileLink: '/profile',
-        noProfileLink: '/profile',
-        showPip: !profile?.username,
-      }}
       {...props}
     />
   )
