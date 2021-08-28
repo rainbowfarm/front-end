@@ -6,16 +6,17 @@ import { PoolsState, Pool, CakeVault, VaultFees, VaultUser, AppThunk } from 'sta
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
-import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
+import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking,fetchPoolsWithdrawFee } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
   fetchUserStakeBalances,
   fetchUserPendingRewards,
+  fetchWithdrawFee,
 } from './fetchPoolsUser'
-import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
+/* import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 import fetchVaultUser from './fetchVaultUser'
-import { getTokenPricesFromFarm } from './helpers'
+ */import { getTokenPricesFromFarm } from './helpers'
 
 const initialState: PoolsState = {
   data: [...poolsConfig],
@@ -46,14 +47,20 @@ const initialState: PoolsState = {
 export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch, getState) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
-
+  const poolWithdrawFeesObj = await fetchPoolsWithdrawFee()
+  const poolWithdrawFeesArr = Object.values(poolWithdrawFeesObj)
   const prices = getTokenPricesFromFarm(getState().farms.data)
-
   const liveData = poolsConfig.map((pool) => {
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
     const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
-    const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
-    const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
+    let poolWithdrawFee = 0
+    poolWithdrawFeesArr.forEach(fees => {
+        if(Object.values(fees)[0] === pool.sousId) {
+          poolWithdrawFee = Object.values(fees)[1]
+        }
+    })
+
+    const isPoolFinished = pool.isFinished
 
     const stakingTokenAddress = pool.stakingToken.address ? getAddress(pool.stakingToken.address).toLowerCase() : null
     const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
@@ -72,6 +79,7 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
     return {
       ...blockLimit,
       ...totalStaking,
+      poolWithdrawFee,
       stakingTokenPrice,
       earningTokenPrice,
       apr,
@@ -110,6 +118,7 @@ export const fetchPoolsUserDataAsync =
     const stakingTokenBalances = await fetchUserBalances(account)
     const stakedBalances = await fetchUserStakeBalances(account)
     const pendingRewards = await fetchUserPendingRewards(account)
+    const withdrawFees = await fetchWithdrawFee(account)
 
     const userData = poolsConfig.map((pool) => ({
       sousId: pool.sousId,
@@ -117,6 +126,7 @@ export const fetchPoolsUserDataAsync =
       stakingTokenBalance: stakingTokenBalances[pool.sousId],
       stakedBalance: stakedBalances[pool.sousId],
       pendingReward: pendingRewards[pool.sousId],
+      withdrawFees: withdrawFees[pool.sousId],
     }))
 
     dispatch(setPoolsUserData(userData))
@@ -150,7 +160,7 @@ export const updateUserPendingReward =
     dispatch(updatePoolsUserData({ sousId, field: 'pendingReward', value: pendingRewards[sousId] }))
   }
 
-export const fetchCakeVaultPublicData = createAsyncThunk<CakeVault>('cakeVault/fetchPublicData', async () => {
+/* export const fetchCakeVaultPublicData = createAsyncThunk<CakeVault>('cakeVault/fetchPublicData', async () => {
   const publicVaultInfo = await fetchPublicVaultData()
   return publicVaultInfo
 })
@@ -167,7 +177,7 @@ export const fetchCakeVaultUserData = createAsyncThunk<VaultUser, { account: str
     return userData
   },
 )
-
+ */
 export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
@@ -196,7 +206,7 @@ export const PoolsSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => {
+/*   extraReducers: (builder) => {
     // Vault public data that updates frequently
     builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<CakeVault>) => {
       state.cakeVault = { ...state.cakeVault, ...action.payload }
@@ -212,7 +222,7 @@ export const PoolsSlice = createSlice({
       userData.isLoading = false
       state.cakeVault = { ...state.cakeVault, userData }
     })
-  },
+  }, */
 })
 
 // Actions

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
-import cakeABI from 'config/abi/cake.json'
+import rnboABI from 'config/abi/RNBO.json'
 import wbnbABI from 'config/abi/weth.json'
 import multicall from 'utils/multicall'
 import { getAddress, getWbnbAddress } from 'utils/addressHelpers'
@@ -9,32 +9,44 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getSouschefV2Contract } from 'utils/contractHelpers'
 
 export const fetchPoolsBlockLimits = async () => {
-  const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
+  const poolsWithEnd = poolsConfig.filter((p) => p.sousId < 0)
   const callsStartBlock = poolsWithEnd.map((poolConfig) => {
     return {
       address: getAddress(poolConfig.contractAddress),
       name: 'startBlock',
     }
   })
-  const callsEndBlock = poolsWithEnd.map((poolConfig) => {
-    return {
-      address: getAddress(poolConfig.contractAddress),
-      name: 'bonusEndBlock',
-    }
-  })
 
   const starts = await multicall(sousChefABI, callsStartBlock)
-  const ends = await multicall(sousChefABI, callsEndBlock)
 
   return poolsWithEnd.map((cakePoolConfig, index) => {
     const startBlock = starts[index]
-    const endBlock = ends[index]
+    const endBlock = 0
     return {
       sousId: cakePoolConfig.sousId,
       startBlock: new BigNumber(startBlock).toJSON(),
       endBlock: new BigNumber(endBlock).toJSON(),
     }
   })
+}
+
+
+export const fetchPoolsWithdrawFee = async () => {
+  const pools = poolsConfig
+  const callsPoolInfo = pools.map((poolConfig) => {
+    return {
+      address: getAddress(poolConfig.contractAddress),
+      name: 'poolInfo',
+      params : [poolConfig.sousId]
+    }
+  })
+  const poolInfo = await multicall(sousChefABI, callsPoolInfo)
+  return {
+     ...pools.map((p, index) => ({
+      sousId: p.sousId,
+      poolWithdrawFee : new BigNumber((poolInfo[index].poolWithdrawFee).toNumber()).toJSON(),
+    })),
+  }
 }
 
 export const fetchPoolsTotalStaking = async () => {
@@ -57,9 +69,8 @@ export const fetchPoolsTotalStaking = async () => {
     }
   })
 
-  const nonBnbPoolsTotalStaked = await multicall(cakeABI, callsNonBnbPools)
+  const nonBnbPoolsTotalStaked = await multicall(rnboABI, callsNonBnbPools)
   const bnbPoolsTotalStaked = await multicall(wbnbABI, callsBnbPools)
-
   return [
     ...nonBnbPools.map((p, index) => ({
       sousId: p.sousId,

@@ -19,6 +19,14 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c.png"
     },
     {
+      "name": "RNBO Token",
+      "symbol": "RNBO",
+      "address": "0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602.png"
+    },
+    {
       "name": "BUSD Token",
       "symbol": "BUSD",
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",

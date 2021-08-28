@@ -1,38 +1,37 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { IconButton, useModal, CalculateIcon } from '@pancakeswap/uikit'
-import ApyCalculatorModal from 'components/ApyCalculatorModal'
-import { useTranslation } from 'contexts/Localization'
+import { CalculateIcon, IconButton, useModal } from '@pancakeswap/uikit'
+import { Address } from 'config/constants/types'
+import ApyCalculatorModal from './ApyCalculatorModal'
 
 export interface ApyButtonProps {
   lpLabel?: string
-  cakePrice?: BigNumber
-  apr?: number
-  displayApr?: string
   addLiquidityUrl?: string
+  cakePrice?: BigNumber
+  apy?: number
+  displayApr?: string
 }
 
-const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, cakePrice, apr, displayApr, addLiquidityUrl }) => {
-  const { t } = useTranslation()
+const ApyButton: React.FC<ApyButtonProps> = ({
+  lpLabel,
+  addLiquidityUrl, 
+  cakePrice,
+  apy,
+  displayApr,
+}) => {
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
-      linkLabel={t('Get %symbol%', { symbol: lpLabel })}
-      tokenPrice={cakePrice.toNumber()}
-      apr={apr}
+      lpLabel={lpLabel}
+      addLiquidityUrl={addLiquidityUrl}
+      cakePrice={cakePrice}
+      apy={new BigNumber(apy)}
       displayApr={displayApr}
-      linkHref={addLiquidityUrl}
-      isFarm
     />,
   )
 
-  const handleClickButton = (event): void => {
-    event.stopPropagation()
-    onPresentApyModal()
-  }
-
   return (
-    <IconButton onClick={handleClickButton} variant="text" scale="sm" ml="4px">
-      <CalculateIcon width="18px" />
+    <IconButton onClick={onPresentApyModal} variant="text" scale="sm" ml="4px">
+      <CalculateIcon />
     </IconButton>
   )
 }

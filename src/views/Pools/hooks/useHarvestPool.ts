@@ -11,14 +11,14 @@ const options = {
   gasLimit: DEFAULT_GAS_LIMIT,
 }
 
-const harvestPool = async (sousChefContract) => {
-  const tx = await sousChefContract.deposit('0', options)
+const harvestPool = async (sousChefContract,sousId) => {
+  const tx = await sousChefContract.deposit(sousId,"0")
   const receipt = await tx.wait()
   return receipt.status
 }
 
-const harvestPoolBnb = async (sousChefContract) => {
-  const tx = await sousChefContract.deposit({ ...options, value: BIG_ZERO })
+const harvestPoolBnb = async (sousChefContract,sousId) => {
+  const tx = await sousChefContract.deposit(sousId, "0")
   const receipt = await tx.wait()
   return receipt.status
 }
@@ -27,19 +27,16 @@ const useHarvestPool = (sousId, isUsingBnb = false) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const sousChefContract = useSousChef(sousId)
-  const masterChefContract = useMasterchef()
 
   const handleHarvest = useCallback(async () => {
-    if (sousId === 0) {
-      await harvestFarm(masterChefContract, 0)
-    } else if (isUsingBnb) {
-      await harvestPoolBnb(sousChefContract)
+    if (isUsingBnb) {
+      await harvestPoolBnb(sousChefContract,sousId)
     } else {
-      await harvestPool(sousChefContract)
+      await harvestPool(sousChefContract,sousId)
     }
     dispatch(updateUserPendingReward(sousId, account))
     dispatch(updateUserBalance(sousId, account))
-  }, [account, dispatch, isUsingBnb, masterChefContract, sousChefContract, sousId])
+  }, [account, dispatch, isUsingBnb, sousChefContract, sousId])
 
   return { onReward: handleHarvest }
 }

@@ -20,7 +20,6 @@ export const fetchPoolsAllowance = async (account) => {
     name: 'allowance',
     params: [account, getAddress(p.contractAddress)],
   }))
-
   const allowances = await multicall(erc20ABI, calls)
   return nonBnbPools.reduce(
     (acc, pool, index) => ({ ...acc, [pool.sousId]: new BigNumber(allowances[index]).toJSON() }),
@@ -55,7 +54,7 @@ export const fetchUserStakeBalances = async (account) => {
   const calls = nonMasterPools.map((p) => ({
     address: getAddress(p.contractAddress),
     name: 'userInfo',
-    params: [account],
+    params: [p.sousId,account],
   }))
   const userInfo = await multicall(sousChefABI, calls)
   const stakedBalances = nonMasterPools.reduce(
@@ -75,8 +74,8 @@ export const fetchUserStakeBalances = async (account) => {
 export const fetchUserPendingRewards = async (account) => {
   const calls = nonMasterPools.map((p) => ({
     address: getAddress(p.contractAddress),
-    name: 'pendingReward',
-    params: [account],
+    name: 'pendingRNBO',
+    params: [p.sousId,account],
   }))
   const res = await multicall(sousChefABI, calls)
   const pendingRewards = nonMasterPools.reduce(
@@ -86,9 +85,24 @@ export const fetchUserPendingRewards = async (account) => {
     }),
     {},
   )
-
-  // Cake / Cake pool
-  const pendingReward = await masterChefContract.pendingCake('0', account)
+  const pendingReward = await masterChefContract.pendingRNBO('0', account)
 
   return { ...pendingRewards, 0: new BigNumber(pendingReward.toString()).toJSON() }
 }
+
+  export const fetchWithdrawFee = async (account) => {
+    const calls = nonMasterPools.map((p) => ({
+      address: getAddress(p.contractAddress),
+      name: 'getActualWithdrawFeeRate',
+      params: [p.sousId],
+    }))
+    const res = await multicall(sousChefABI, calls)
+    const withdrawFee = nonMasterPools.reduce(
+      (acc, pool, index) => ({
+        ...acc,
+        [pool.sousId]: new BigNumber(res[index]).toJSON(),
+      }),
+      {},
+    )
+    return { ...withdrawFee, 0: new BigNumber(withdrawFee.toString()).toJSON() }
+  }

@@ -63,7 +63,6 @@ const FarmedStakingCard = () => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const harvestAllFarms = useCallback(async () => {
@@ -71,6 +70,7 @@ const FarmedStakingCard = () => {
     try {
       await onReward()
     } catch (error) {
+      console.log(error)
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
       setPendingTx(false)

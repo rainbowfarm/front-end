@@ -31,11 +31,14 @@ export interface Farm extends FarmConfig {
   lpTotalSupply?: SerializedBigNumber
   tokenPriceVsQuote?: SerializedBigNumber
   poolWeight?: SerializedBigNumber
+  rnboPerBlock?: SerializedBigNumber
+  poolWithdrawFee? : SerializedBigNumber
   userData?: {
     allowance: string
     tokenBalance: string
     stakedBalance: string
     earnings: string
+    withdrawFees: BigNumber
   }
 }
 
@@ -48,11 +51,13 @@ export interface Pool extends PoolConfig {
   stakingTokenPrice?: number
   earningTokenPrice?: number
   isAutoVault?: boolean
+  poolWithdrawFee? : number
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber
     stakedBalance: BigNumber
     pendingReward: BigNumber
+    withdrawFees: BigNumber
   }
 }
 

@@ -4,6 +4,7 @@ import isArchivedPid from 'utils/farmHelpers'
 import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import fetchFarms from './fetchFarms'
 import fetchFarmsPrices from './fetchFarmsPrices'
+import BigNumber from 'bignumber.js'
 import {
   fetchFarmUserEarnings,
   fetchFarmUserAllowances,
@@ -19,15 +20,16 @@ const noAccountFarmConfig = farmsConfig.map((farm) => ({
     tokenBalance: '0',
     stakedBalance: '0',
     earnings: '0',
+    withdrawFees: new BigNumber(0),
   },
 }))
 
-const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false, userDataLoaded: false }
+const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false, userDataLoaded: true }
 
 export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
 
 // Async thunks
-export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
+/* export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
   'farms/fetchFarmsPublicDataAsync',
   async (pids) => {
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
@@ -35,7 +37,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
     // Add price helper farms
     const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
 
-    const farms = await fetchFarms(farmsWithPriceHelpers)
+    const farms = await fetchFarms()
     const farmsWithPrices = await fetchFarmsPrices(farms)
 
     // Filter out price helper LP config farms
@@ -46,7 +48,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
     return farmsWithoutHelperLps
   },
 )
-
+ */
 interface FarmUserDataResponse {
   pid: number
   allowance: string
@@ -55,7 +57,7 @@ interface FarmUserDataResponse {
   earnings: string
 }
 
-export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], { account: string; pids: number[] }>(
+/* export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], { account: string; pids: number[] }>(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids }) => {
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
@@ -75,8 +77,8 @@ export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], {
     })
   },
 )
-
-export const farmsSlice = createSlice({
+ */
+/* export const farmsSlice = createSlice({
   name: 'Farms',
   initialState,
   reducers: {
@@ -93,7 +95,6 @@ export const farmsSlice = createSlice({
         return { ...farm, ...liveFarmData }
       })
     })
-
     // Update farms with user data
     builder.addCase(fetchFarmUserDataAsync.fulfilled, (state, action) => {
       action.payload.forEach((userDataEl) => {
@@ -103,10 +104,60 @@ export const farmsSlice = createSlice({
       })
       state.userDataLoaded = true
     })
+    console.log(fetchFarmUserDataAsync.fulfilled)
+  },
+})
+ */
+
+export const farmsSlice = createSlice({
+  name: 'Farms',
+  initialState,
+  reducers: {
+    setFarmsPublicData: (state, action) => {
+      const liveFarmsData: Farm[] = action.payload
+      state.data = state.data.map((farm) => {
+        const liveFarmData = liveFarmsData.find((f) => f.pid === farm.pid)
+        return { ...farm, ...liveFarmData }
+      })
+    },
+    setFarmUserData: (state, action) => {
+      const { arrayOfUserDataObjects } = action.payload
+      arrayOfUserDataObjects.forEach((userDataEl) => {
+        const { index } = userDataEl
+        state.data[index] = { ...state.data[index], userData: userDataEl }
+      })
+    },
   },
 })
 
+
 // Actions
-export const { setLoadArchivedFarmsData } = farmsSlice.actions
+// export const { setLoadArchivedFarmsData } = farmsSlice.actions
+
+export const { setFarmsPublicData, setFarmUserData } = farmsSlice.actions
+
+export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
+  const farms = await fetchFarms()
+  dispatch(setFarmsPublicData(farms))
+}
+export const fetchFarmUserDataAsync = (account, pids) => async (dispatch) => {
+  const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
+  const userFarmAllowances = await fetchFarmUserAllowances(account, farmsToFetch)
+  const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farmsToFetch)
+  const userStakedBalances = await fetchFarmUserStakedBalances(account, farmsToFetch)
+  const userFarmEarnings = await fetchFarmUserEarnings(account, farmsToFetch)
+
+  const arrayOfUserDataObjects = userFarmAllowances.map((farmAllowance, index) => {
+    return {
+      index,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+    }
+  })
+
+  dispatch(setFarmUserData({ arrayOfUserDataObjects }))
+}
 
 export default farmsSlice.reducer

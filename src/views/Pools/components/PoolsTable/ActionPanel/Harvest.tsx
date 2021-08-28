@@ -2,12 +2,10 @@ import React from 'react'
 import { Button, Text, useModal, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { PoolCategory } from 'config/constants/types'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
-import { useCakeVault } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Pool } from 'state/types'
 
@@ -32,31 +30,13 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
   // These will be reassigned later if its Auto CAKE vault
-  let earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  let earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
-  let hasEarnings = earnings.gt(0)
+  const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
+  const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
+  const hasEarnings = earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
   const isCompoundPool = sousId === 0
   const isBnbPool = poolCategory === PoolCategory.BINANCE
-
-  // Auto CAKE vault calculations
-  const {
-    userData: { cakeAtLastUserAction, userShares },
-    pricePerFullShare,
-    fees: { performanceFee },
-  } = useCakeVault()
-  const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
-    account,
-    cakeAtLastUserAction,
-    userShares,
-    pricePerFullShare,
-    earningTokenPrice,
-  )
-
-  earningTokenBalance = isAutoVault ? autoCakeToDisplay : earningTokenBalance
-  hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings
-  earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance
 
   const [onPresentCollect] = useModal(
     <CollectModal

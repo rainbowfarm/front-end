@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js/bignumber'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getCakeAddress, getRNBOAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
 import { useTotalValue } from 'state/hooks'
 import { useFarms,usePriceBnbBusd,usePriceCakeBusd } from 'state/farms/hooks'
@@ -26,9 +26,10 @@ const Row = styled.div`
 const CakeStats = () => {
   const { t } = useTranslation()
   const totalSupply = useTotalSupply()
-  const burnedBalance = useBurnedBalance(getCakeAddress())
+  const burnedBalance = useBurnedBalance(getRNBOAddress())
   const farms = useFarms();
   const RNBOPrice = usePriceCakeBusd();
+  console.log(RNBOPrice)
   const circSupply = totalSupply ? totalSupply.minus(burnedBalance) : new BigNumber(0);
   const cakeSupply = getBalanceNumber(circSupply);
   const marketCap = RNBOPrice.times(circSupply);

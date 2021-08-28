@@ -3,12 +3,12 @@ import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import Balance from 'components/Balance'
+import Fees from 'components/Balance'
 import { Pool } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
-interface TotalStakedCellProps {
+interface WithdrawFeeCellProps {
   pool: Pool
 }
 
@@ -16,32 +16,23 @@ const StyledCell = styled(BaseCell)`
   flex: 2 0 100px;
 `
 
-const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
+const WithdrawFeeCell: React.FC<WithdrawFeeCellProps> = ({ pool }) => {
   const { t } = useTranslation()
-  const { sousId, stakingToken, totalStaked, isAutoVault } = pool
-
-  const isManualCakePool = sousId === 0
-
-  const totalStakedBalance = useMemo(() => {
-    return getBalanceNumber(totalStaked, stakingToken.decimals)
-  }, [totalStaked, stakingToken.decimals])
+  const { sousId , userData } = pool
+  const withdrawFees = ((userData.withdrawFees.toNumber() > 0 ? userData.withdrawFees.toNumber() : pool.poolWithdrawFee)/100)
 
   return (
     <StyledCell role="cell">
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('Total staked')}
+          {t('Withdraw Fee %')}
         </Text>
-        {totalStaked && totalStaked.gte(0) ? (
           <Flex height="20px" alignItems="center">
-            <Balance fontSize="16px" value={totalStakedBalance} decimals={0} unit={` ${stakingToken.symbol}`} />
+            <Fees fontSize="16px" value={withdrawFees} decimals={1}/>
           </Flex>
-        ) : (
-          <Skeleton width="80px" height="16px" />
-        )}
       </CellContent>
     </StyledCell>
   )
 }
 
-export default TotalStakedCell
+export default WithdrawFeeCell

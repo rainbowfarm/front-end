@@ -3,11 +3,9 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useCakeVault } from 'state/pools/hooks'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { TokenPairImage } from 'components/TokenImage'
-import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface NameCellProps {
@@ -28,10 +26,6 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { isXs, isSm } = useMatchBreakpoints()
   const { sousId, stakingToken, earningToken, userData, isFinished, isAutoVault } = pool
-  const {
-    userData: { userShares },
-  } = useCakeVault()
-  const hasVaultShares = userShares && userShares.gt(0)
 
   const stakingTokenSymbol = stakingToken.symbol
   const earningTokenSymbol = earningToken.symbol
@@ -40,18 +34,14 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const isStaked = stakedBalance.gt(0)
   const isManualCakePool = sousId === 0
 
-  const showStakedTag = isAutoVault ? hasVaultShares : isStaked
+  const showStakedTag = isStaked
   const title = `${t('Earn')} ${earningTokenSymbol}`
   const subtitle = `${t('Stake')} ${stakingTokenSymbol}`
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isXs && !isSm)
 
   return (
     <StyledCell role="cell">
-      {isAutoVault ? (
-        <CakeVaultTokenPairImage mr="8px" width={40} height={40} />
-      ) : (
         <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
-      )}
       <CellContent>
         {showStakedTag && (
           <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
@@ -59,11 +49,11 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
           </Text>
         )}
         <Text bold={!isXs && !isSm} small={isXs || isSm}>
-          {title}
+          {subtitle}
         </Text>
         {showSubtitle && (
           <Text fontSize="12px" color="textSubtle">
-            {subtitle}
+          {title}
           </Text>
         )}
       </CellContent>

@@ -17,6 +17,7 @@ import { orderBy } from 'lodash'
 import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import PageHeader from 'components/PageHeader'
+import { BLOCKS_PER_YEAR } from 'config'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
@@ -157,15 +158,28 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
-        if (!farm.lpTotalInQuoteToken || !farm.quoteToken.busdPrice) {
+/*         if (!farm.lpTotalInQuoteToken || !farm.quoteToken.busdPrice) {
+          console.log("Here")
           return farm
         }
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
-        const { cakeRewardsApr, lpRewardsApr } = isActive
+ */        
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.tokenPriceVsQuote)
+        const cakeRewardPerBlock = new BigNumber(farm.rnboPerBlock).times(new BigNumber(farm.poolWeight)).div(new BigNumber(10).pow(18))
+        const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
+        let apy = cakePrice.times(cakeRewardPerYear);
+        let totalValue = new BigNumber(farm.lpTotalInQuoteToken || 0);
+/*         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
-
-        return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
+ */
+          if (farm.quoteToken.symbol === "RNBO") {
+            totalValue = totalValue.times(cakePrice);
+          }
+          if(totalValue.comparedTo(0) > 0){
+            apy = apy.div(totalValue);
+          }
+          console.log(farm)
+          return { ...farm, apr: apy.toNumber(), lpRewardsApr: apy.toNumber(), liquidity: totalLiquidity }
       })
 
       if (query) {
@@ -176,7 +190,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPR
     },
-    [cakePrice, query, isActive],
+    [cakePrice, query],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -274,7 +288,8 @@ const Farms: React.FC = () => {
 
     const row: RowProps = {
       apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+        // value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+        value : farm.apr.toString(),
         multiplier: farm.multiplier,
         lpLabel,
         tokenAddress,
@@ -300,7 +315,6 @@ const Farms: React.FC = () => {
       },
       details: farm,
     }
-
     return row
   })
 
@@ -425,6 +439,10 @@ const Farms: React.FC = () => {
                   {
                     label: t('Liquidity'),
                     value: 'liquidity',
+                  },
+                  {
+                    label: t('Withdraw Fees'),
+                    value: 'Withdrawfees',
                   },
                 ]}
                 onChange={handleSortOptionChange}

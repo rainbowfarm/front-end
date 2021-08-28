@@ -8,9 +8,6 @@ import useRefresh from 'hooks/useRefresh'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
-  fetchCakeVaultPublicData,
-  fetchCakeVaultUserData,
-  fetchCakeVaultFees,
   fetchPoolsStakingLimitsAsync,
 } from '.'
 import { State, Pool } from '../types'
@@ -47,7 +44,7 @@ export const usePools = (account): { pools: Pool[]; userDataLoaded: boolean } =>
   return { pools: pools.map(transformPool), userDataLoaded }
 }
 
-export const useFetchCakeVault = () => {
+/* export const useFetchCakeVault = () => {
   const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
@@ -63,9 +60,9 @@ export const useFetchCakeVault = () => {
   useEffect(() => {
     dispatch(fetchCakeVaultFees())
   }, [dispatch])
-}
+} */
 
-export const useCakeVault = () => {
+/* export const useCakeVault = () => {
   const {
     totalShares: totalSharesAsString,
     pricePerFullShare: pricePerFullShareAsString,
@@ -81,7 +78,6 @@ export const useCakeVault = () => {
       lastUserActionTime,
     },
   } = useSelector((state: State) => state.pools.cakeVault)
-
   const estimatedCakeBountyReward = useMemo(() => {
     return new BigNumber(estimatedCakeBountyRewardAsString)
   }, [estimatedCakeBountyRewardAsString])
@@ -131,3 +127,4 @@ export const useCakeVault = () => {
     },
   }
 }
+ */

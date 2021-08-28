@@ -59,12 +59,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
 
   const handleStake = async (amount: string) => {
     await onStake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    dispatch(fetchFarmUserDataAsync(account, [pid]))
   }
 
   const handleUnstake = async (amount: string) => {
     await onUnstake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    dispatch(fetchFarmUserDataAsync(account, [pid] ))
   }
 
   const displayBalance = useCallback(() => {
@@ -92,7 +92,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     try {
       setRequestedApproval(true)
       await onApprove()
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync(account, [pid] ))
 
       setRequestedApproval(false)
     } catch (e) {
@@ -196,7 +196,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       </ActionContainer>
     )
   }
-
   return (
     <ActionContainer>
       <ActionTitles>

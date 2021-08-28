@@ -18,7 +18,6 @@ import {
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useBlock } from 'state/block/hooks'
-import { useCakeVault } from 'state/pools/hooks'
 import { Pool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
@@ -42,11 +41,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const {
-    totalCakeInVault,
-    fees: { performanceFee },
-  } = useCakeVault()
-
-  const {
     stakingToken,
     earningToken,
     totalStaked,
@@ -57,13 +51,11 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     sousId,
     isAutoVault,
   } = pool
-
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getCakeVaultAddress()
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const isManualCakePool = sousId === 0
-
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
 
@@ -73,13 +65,10 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   )
 
   const getTotalStakedBalance = () => {
-    if (isAutoVault) {
-      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
-    }
-    if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault)
-      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
-    }
+    // if (isManualCakePool) {
+    //   const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked)
+    //  return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
+    // }
     return getBalanceNumber(totalStaked, stakingToken.decimals)
   }
 

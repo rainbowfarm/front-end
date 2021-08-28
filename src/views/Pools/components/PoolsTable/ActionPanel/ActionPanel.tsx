@@ -16,7 +16,6 @@ import {
 import { BASE_BSC_SCAN_URL } from 'config'
 import { getBscScanLink } from 'utils'
 import { useBlock } from 'state/block/hooks'
-import { useCakeVault } from 'state/pools/hooks'
 import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -134,20 +133,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
 
-  const {
-    totalCakeInVault,
-    fees: { performanceFee },
-  } = useCakeVault()
-
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
   const isManualCakePool = sousId === 0
 
   const getTotalStakedBalance = () => {
-    if (isAutoVault) {
-      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
-    }
     if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault)
+      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked)
       return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
     }
     return getBalanceNumber(totalStaked, stakingToken.decimals)
@@ -202,7 +192,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const aprRow = (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
       <Text>{isAutoVault ? t('APY') : t('APR')}:</Text>
-      <Apr pool={pool} showIcon performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
+      <Apr pool={pool} showIcon performanceFee={0} />
     </Flex>
   )
 

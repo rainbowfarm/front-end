@@ -9,45 +9,49 @@ const farms: FarmConfig[] = [
     pid: 0,
     lpSymbol: 'RNBO',
     lpAddresses: {
-      97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+      97: '0x9d2d0a9e480c6dD04Eb4063e70e0c5cCC9280C01',
+      56: '0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602',
     },
-    token: tokens.syrup,
+    token: tokens.rnbo,
     quoteToken: tokens.wbnb,
+    isTokenOnly : true,
   },
   {
-    pid: 251,
+    pid: 1,
+    lpSymbol: 'RNBO-BUSD LP',
+    lpAddresses: {
+      97: '0x154122269ddc78010778c46f21286b181cb1dc09',
+      56: '0x154122269ddc78010778c46f21286b181cb1dc09',
+    },
+    token: tokens.rnbo,
+    quoteToken: tokens.busd,
+    isTokenOnly : false,
+  },
+  {
+    pid: 2,
     lpSymbol: 'RNBO-BNB LP',
     lpAddresses: {
-      97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
-      56: '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
+      97: '0xc568036b0cdFdBE21B357aF67707D20aBb51360A',
+      56: '0x480faabda2d2fadb68531feaebbbf84f66513644',
     },
-    token: tokens.cake,
+    token: tokens.rnbo,
     quoteToken: tokens.wbnb,
+    isTokenOnly : false,
   },
   {
-    pid: 252,
-    lpSymbol: 'BUSD-BNB LP',
+    pid: 5,
+    lpSymbol: 'BNB-BUSD LP',
     lpAddresses: {
-      97: '',
+      97: '0xe0e92035077c39594793e61802a350347c320cf2',
       56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     },
     token: tokens.busd,
     quoteToken: tokens.wbnb,
+    isTokenOnly : false,
   },
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
-  {
-    pid: 10,
-    lpSymbol: 'BAKE-BNB LP',
-    lpAddresses: {
-      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0x3Da30727ed0626b78C212e81B37B97A8eF8A25bB',
-    },
-    token: tokens.bake,
-    quoteToken: tokens.wbnb,
-  },
 ]
 
 export default farms

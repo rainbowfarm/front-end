@@ -56,14 +56,14 @@ const Apr: React.FC<AprProps> = ({
     <Container>
       {originalValue ? (
         <>
-          <AprWrapper>{value}%</AprWrapper>
+          <AprWrapper>{(new BigNumber(value).toFixed(2))}%</AprWrapper>
           {!hideButton && (
             <ApyButton
               lpLabel={lpLabel}
-              cakePrice={cakePrice}
-              apr={originalValue}
-              displayApr={value}
               addLiquidityUrl={addLiquidityUrl}
+              cakePrice={cakePrice}
+              apy={originalValue}
+              displayApr={value}
             />
           )}
         </>
@@ -75,7 +75,7 @@ const Apr: React.FC<AprProps> = ({
     </Container>
   ) : (
     <Container>
-      <AprWrapper>{originalValue}%</AprWrapper>
+      <AprWrapper>{originalValue.toFixed(2)}%</AprWrapper>
     </Container>
   )
 }

@@ -18,11 +18,10 @@ export const usePollFarmsData = (includeArchive = false) => {
   useEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
     const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
-
-    dispatch(fetchFarmsPublicDataAsync(pids))
+    dispatch(fetchFarmsPublicDataAsync())
 
     if (account) {
-      dispatch(fetchFarmUserDataAsync({ account, pids }))
+      dispatch(fetchFarmUserDataAsync(account, pids ))
     }
   }, [includeArchive, dispatch, slowRefresh, account])
 }
@@ -30,14 +29,17 @@ export const usePollFarmsData = (includeArchive = false) => {
 /**
  * Fetches the "core" farm data used globally
  * 251 = CAKE-BNB LP
+ * 2 = RNBO-BNB LP
  * 252 = BUSD-BNB LP
+ * 5 = BNB-BUSD
  */
+
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync([251, 252]))
+    dispatch(fetchFarmsPublicDataAsync())
   }, [dispatch, fastRefresh])
 }
 
@@ -94,11 +96,11 @@ export const useLpTokenPrice = (symbol: string) => {
 // /!\ Deprecated , use the BUSD hook in /hooks
 
 export const usePriceBnbBusd = (): BigNumber => {
-  const bnbBusdFarm = useFarmFromPid(252)
+  const bnbBusdFarm = useFarmFromPid(5)
   return new BigNumber(bnbBusdFarm.quoteToken.busdPrice)
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
-  const cakeBnbFarm = useFarmFromPid(251)
-  return new BigNumber(cakeBnbFarm.token.busdPrice)
+  const rnbobusdFarm = useFarmFromPid(1)
+  return new BigNumber(rnbobusdFarm.tokenPriceVsQuote)
 }

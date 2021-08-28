@@ -71,7 +71,7 @@ const Home: React.FC = () => {
         {t('Defi Yield Farming with lowest fees')}
         </Heading>
         <Heading as="h1" scale="md" mt="10px" mb="24px" color="secondary">
-          {t('Farming will begin at ')}<a href="https://polygonscan.com/block/countdown/17285000" rel="noreferrer" target="_blank">block #17285000</a>
+          {t('Farming will begin at ')}<a href="https://bscscan.com/block/countdown/10800000" rel="noreferrer" target="_blank">block #10800000</a>
         </Heading>  
       </Hero>
       <div>

@@ -52,12 +52,14 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
     try {
       setRequestedApproval(true)
       await onApprove()
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync(account, [pid] ))
       setRequestedApproval(false)
     } catch (e) {
       console.error(e)
     }
   }, [onApprove, dispatch, account, pid])
+
+  console.log(isApproved)
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (
@@ -79,7 +81,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
     <Action>
       <Flex>
         <Text bold textTransform="uppercase" color="#EC33FF" fontSize="12px" pr="4px">
-          CAKE
+          RNBO
         </Text>
         <Text bold textTransform="uppercase" color="#EC33FF" fontSize="12px">
           {t('Earned')}

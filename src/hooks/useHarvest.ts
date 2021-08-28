@@ -15,7 +15,7 @@ export const useHarvest = (farmPid: number) => {
     const txHash = await harvest(masterChefContract, farmPid, account)
     const farmsToFetch = farmsConfig
     const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
-    dispatch(fetchFarmUserDataAsync({account,pids}))
+    dispatch(fetchFarmUserDataAsync(account,pids))
     return txHash
   }, [account, dispatch, farmPid, masterChefContract])
 

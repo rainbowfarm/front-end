@@ -72,8 +72,9 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 
 interface FarmCardProps {
   farm: FarmWithStakedValue
-  displayApr: string
+  displayApr?: string
   removed: boolean
+  bnbPrice?: BigNumber
   cakePrice?: BigNumber
   account?: string
 }
@@ -82,7 +83,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
   const { t } = useTranslation()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
-
   const totalValueFormatted =
     farm.liquidity && farm.liquidity.gt(0)
       ? `$${farm.liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
@@ -119,7 +119,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
                   lpLabel={lpLabel}
                   addLiquidityUrl={addLiquidityUrl}
                   cakePrice={cakePrice}
-                  apr={farm.apr}
+                  apy={farm.apr}
                   displayApr={displayApr}
                 />
                 {displayApr}%

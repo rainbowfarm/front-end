@@ -49,8 +49,8 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const [shouldCompound, setShouldCompound] = useState(isCompoundPool)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text mb="12px">{t('Compound: collect and restake CAKE into pool.')}</Text>
-      <Text>{t('Harvest: collect CAKE and send to wallet')}</Text>
+      <Text mb="12px">{t('Compound: collect and restake RNBO into pool.')}</Text>
+      <Text>{t('Harvest: collect RNBO and send to wallet')}</Text>
     </>,
     { placement: 'bottom-end', tooltipOffset: [20, 10] },
   )
@@ -58,7 +58,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const handleHarvestConfirm = async () => {
     setPendingTx(true)
     // compounding
-    if (shouldCompound) {
+/*     if (shouldCompound) {
       try {
         await onStake(fullBalance, earningToken.decimals)
         toastSuccess(
@@ -73,7 +73,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         setPendingTx(false)
       }
     } else {
-      // harvesting
+ */      // harvesting
       try {
         await onReward()
         toastSuccess(
@@ -87,19 +87,18 @@ const CollectModal: React.FC<CollectModalProps> = ({
         console.error(e)
         setPendingTx(false)
       }
-    }
   }
 
   return (
     <Modal
-      title={`${earningToken.symbol} ${isCompoundPool ? t('Collect') : t('Harvest')}`}
+      title={`${earningToken.symbol} ${t('Harvest')}`}
       onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.background}
     >
       {isCompoundPool && (
         <Flex justifyContent="center" alignItems="center" mb="24px">
-          <ButtonMenu
-            activeIndex={shouldCompound ? 0 : 1}
+{/*           <ButtonMenu
+            activeIndex={1}
             scale="sm"
             variant="subtle"
             onItemClick={(index) => setShouldCompound(!index)}
@@ -107,7 +106,11 @@ const CollectModal: React.FC<CollectModalProps> = ({
             <ButtonMenuItem as="button">{t('Compound')}</ButtonMenuItem>
             <ButtonMenuItem as="button">{t('Harvest')}</ButtonMenuItem>
           </ButtonMenu>
-          <Flex ml="10px" ref={targetRef}>
+ */}          
+      <Button variant="text" onClick={onDismiss} pb="0px">
+        {t('Harvest')}
+      </Button>
+        <Flex ml="10px" ref={targetRef}>
             <HelpIcon color="textSubtle" />
           </Flex>
           {tooltipVisible && tooltip}
@@ -115,7 +118,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
       )}
 
       <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Text>{shouldCompound ? t('Compounding') : t('Harvesting')}:</Text>
+        <Text>{ t('Harvesting')}:</Text>
         <Flex flexDirection="column">
           <Heading>
             {formattedBalance} {earningToken.symbol}

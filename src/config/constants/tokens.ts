@@ -19,14 +19,14 @@ export const CAKE: { [chainId: number]: Token } = {
 export const RNBO: { [chainId: number]: Token } = {
   [ChainId.MAINNET]: new Token(
     ChainId.MAINNET,
-    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+    '0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602',
     18,
     'RNBO',
     'RainbowFarm Token',
   ),
   [ChainId.TESTNET]: new Token(
     ChainId.TESTNET,
-    '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+    '0x9d2d0a9e480c6dD04Eb4063e70e0c5cCC9280C01',
     18,
     'RNBO',
     'RainbowFarm Token',
@@ -35,21 +35,21 @@ export const RNBO: { [chainId: number]: Token } = {
 export const BUSD: { [chainId: number]: Token } = {
   [ChainId.MAINNET]: new Token(
     ChainId.MAINNET,
-    '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+    '0xe9e7cea3dedca5984780bafc599bd69add087d56',
     18,
     'BUSD',
     'Binance USD',
   ),
   [ChainId.TESTNET]: new Token(
     ChainId.TESTNET,
-    '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+    '0xe9e7cea3dedca5984780bafc599bd69add087d56',
     18,
     'BUSD',
     'Binance USD',
   ),
 }
 
-export const WBNB = new Token(ChainId.MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')
+export const WBNB = new Token(ChainId.MAINNET, '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')
 export const DAI = new Token(ChainId.MAINNET, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'Dai Stablecoin')
 export const USDT = new Token(ChainId.MAINNET, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'Tether USD')
 export const BTCB = new Token(ChainId.MAINNET, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'Binance BTC')
@@ -92,8 +92,8 @@ const tokens = {
   rnbo: {
     symbol: 'RNBO',
     address: {
-      56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-      97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+      56: '0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602',
+      97: '0x9d2d0a9e480c6dD04Eb4063e70e0c5cCC9280C01',
     },
     decimals: 18,
     projectLink: 'https://rainbowfarm.finance/',
@@ -821,8 +821,8 @@ const tokens = {
   busd: {
     symbol: 'BUSD',
     address: {
-      56: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
-      97: '',
+      56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+      97: '0x8301f2213c0eed49a7e28ae4c3e91722919b8b47',
     },
     decimals: 18,
     projectLink: 'https://www.paxos.com/busd/',

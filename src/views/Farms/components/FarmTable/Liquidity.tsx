@@ -32,9 +32,11 @@ const Container = styled.div`
 const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   const displayLiquidity =
     liquidity && liquidity.gt(0) ? (
-      `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+      // `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+      liquidity.toNumber().toFixed(2)
     ) : (
-      <Skeleton width={60} />
+      // <Skeleton width={60} />
+      '0'
     )
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -45,7 +47,7 @@ const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   return (
     <Container>
       <LiquidityWrapper>
-        <Text>{displayLiquidity}</Text>
+        <Text>{displayLiquidity} USD</Text>
       </LiquidityWrapper>
       <ReferenceElement ref={targetRef}>
         <HelpIcon color="textSubtle" />
