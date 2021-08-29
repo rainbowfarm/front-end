@@ -6,7 +6,7 @@ import { PoolsState, Pool, CakeVault, VaultFees, VaultUser, AppThunk } from 'sta
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
-import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking,fetchPoolsWithdrawFee } from './fetchPools'
+import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking,fetchPoolsWithdrawFee, fetchPoolAllocPoint, fetchTotalAllocPoints } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
@@ -43,22 +43,33 @@ const initialState: PoolsState = {
   },
 }
 
+
 // Thunks
 export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch, getState) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
+  const allocPoints = await fetchPoolAllocPoint()
+  const allocPointsArr = Object.values(allocPoints)
+  const totalAllocPoints = await fetchTotalAllocPoints()
   const poolWithdrawFeesObj = await fetchPoolsWithdrawFee()
   const poolWithdrawFeesArr = Object.values(poolWithdrawFeesObj)
   const prices = getTokenPricesFromFarm(getState().farms.data)
   const liveData = poolsConfig.map((pool) => {
-    const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
-    const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
-    let poolWithdrawFee = 0
-    poolWithdrawFeesArr.forEach(fees => {
-        if(Object.values(fees)[0] === pool.sousId) {
-          poolWithdrawFee = Object.values(fees)[1]
-        }
-    })
+  const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
+  const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
+  let poolWithdrawFee = 0
+  let poolAllocPoints = 0
+  poolWithdrawFeesArr.forEach(fees => {
+      if(Object.values(fees)[0] === pool.sousId) {
+        poolWithdrawFee = Object.values(fees)[1]
+      }
+  })
+
+  allocPointsArr.forEach(points => {
+    if(Object.values(points)[0] === pool.sousId) {
+      poolAllocPoints = Object.values(points)[1]
+    }
+})
 
     const isPoolFinished = pool.isFinished
 
@@ -67,12 +78,13 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
 
     const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null
     const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+    // console.log(parsenumber(pool.tokenPerBlock)*(poolAllocPoints/totalAllocPoints))
     const apr = !isPoolFinished
       ? getPoolApr(
           stakingTokenPrice,
           earningTokenPrice,
           getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-          parseFloat(pool.tokenPerBlock),
+          parseFloat(pool.tokenPerBlock)*(poolAllocPoints/totalAllocPoints),
         )
       : 0
 
@@ -80,6 +92,7 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
       ...blockLimit,
       ...totalStaking,
       poolWithdrawFee,
+      poolAllocPoints,
       stakingTokenPrice,
       earningTokenPrice,
       apr,

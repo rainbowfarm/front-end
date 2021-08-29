@@ -35,17 +35,37 @@ export const transformPool = (pool: Pool): Pool => {
 }
 
 export const getTokenPricesFromFarm = (farms: Farm[]) => {
+  const rnbobusd = farms.find(x => x.pid === 1).tokenPriceVsQuote
+  const bnbbusd = farms.find(x => x.pid === 5).tokenPriceVsQuote
   return farms.reduce((prices, farm) => {
+    if(farm.pid !== 0){
     const quoteTokenAddress = getAddress(farm.quoteToken.address).toLocaleLowerCase()
     const tokenAddress = getAddress(farm.token.address).toLocaleLowerCase()
     /* eslint-disable no-param-reassign */
     if (!prices[quoteTokenAddress]) {
-      prices[quoteTokenAddress] = new BigNumber(farm.quoteToken.busdPrice).toNumber()
+      if(farm.quoteToken.symbol === "wBNB"){
+        prices[quoteTokenAddress] = bnbbusd
+      }
+      else if(farm.quoteToken.symbol === "BUSD"){
+        prices[quoteTokenAddress] = 1
+      }
+      else{
+        console.log(farm)
+        prices[quoteTokenAddress] = farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD").tokenPriceVsQuote
+      }
     }
     if (!prices[tokenAddress]) {
-      prices[tokenAddress] = new BigNumber(farm.token.busdPrice).toNumber()
+      if(farm.quoteToken.symbol === "BUSD"){
+        prices[tokenAddress] = farm.tokenPriceVsQuote
+      }
+      else if(farm.quoteToken.symbol === "wBNB"){
+        prices[tokenAddress] = new BigNumber(farm.tokenPriceVsQuote).toNumber()*new BigNumber(bnbbusd).toNumber()
+      }
+      else{
+        prices[tokenAddress] = new BigNumber(farm.tokenPriceVsQuote).toNumber()*new BigNumber(farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD").tokenPriceVsQuote).toNumber()
+      }
     }
-    /* eslint-enable no-param-reassign */
+    }  /* eslint-enable no-param-reassign */
     return prices
   }, {})
 }

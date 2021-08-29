@@ -4,7 +4,7 @@ import sousChefABI from 'config/abi/sousChef.json'
 import rnboABI from 'config/abi/RNBO.json'
 import wbnbABI from 'config/abi/weth.json'
 import multicall from 'utils/multicall'
-import { getAddress, getWbnbAddress } from 'utils/addressHelpers'
+import { getAddress, getWbnbAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getSouschefV2Contract } from 'utils/contractHelpers'
 
@@ -31,6 +31,19 @@ export const fetchPoolsBlockLimits = async () => {
 }
 
 
+export const fetchTotalAllocPoints = async () => {
+  const callsTotalAllocPoints = [{
+      address: getMasterChefAddress(),
+      name: 'totalAllocPoint',
+    }]
+
+  const totalAllocPoints = await multicall(sousChefABI, callsTotalAllocPoints)
+  const allocpoints = totalAllocPoints[0]
+  console.log(allocpoints)
+  return allocpoints
+}
+
+
 export const fetchPoolsWithdrawFee = async () => {
   const pools = poolsConfig
   const callsPoolInfo = pools.map((poolConfig) => {
@@ -45,6 +58,24 @@ export const fetchPoolsWithdrawFee = async () => {
      ...pools.map((p, index) => ({
       sousId: p.sousId,
       poolWithdrawFee : new BigNumber((poolInfo[index].poolWithdrawFee).toNumber()).toJSON(),
+    })),
+  }
+}
+
+export const fetchPoolAllocPoint = async () => {
+  const pools = poolsConfig
+  const callsPoolInfo = pools.map((poolConfig) => {
+    return {
+      address: getAddress(poolConfig.contractAddress),
+      name: 'poolInfo',
+      params : [poolConfig.sousId]
+    }
+  })
+  const poolInfo = await multicall(sousChefABI, callsPoolInfo)
+  return {
+     ...pools.map((p, index) => ({
+      sousId: p.sousId,
+      poolAllocPoint : new BigNumber((poolInfo[index].allocPoint).toNumber()).toJSON(),
     })),
   }
 }
