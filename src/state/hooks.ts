@@ -179,19 +179,22 @@ export const useTotalValue = (): BigNumber => {
   const farms = useFarms();
   const bnbPrice = usePriceBnbBusd();
   const cakePrice = usePriceCakeBusd();
+  console.log(cakePrice)
+  console.log(bnbPrice)
   let value = new BigNumber(0);
   for (let i = 0; i < farms.data.length; i++) {
     const farm = farms.data[i]
-    if (farm.lpTotalInQuoteToken) {
+    if (new BigNumber(farm.lpTotalInQuoteToken).toNumber()) {
       let val;
-      if (farm.quoteToken.symbol === QuoteToken.WMATIC) {
-        val = (bnbPrice.times(farm.lpTotalInQuoteToken));
-      }else if (farm.quoteToken.symbol === QuoteToken.CAKE) {
-        val = (cakePrice.times(farm.lpTotalInQuoteToken));
-       
+      console.log(farm)
+      if (farm.quoteToken.symbol === "wBNB") {
+        val = (bnbPrice.times(new BigNumber(farm.lpTotalInQuoteToken).toNumber()));
+      }else if (farm.quoteToken.symbol === "RNBO") {
+        val = (cakePrice.times(new BigNumber(farm.lpTotalInQuoteToken).toNumber()));
       }else{
-        val = (farm.lpTotalInQuoteToken); // USDC etc
+        val = (new BigNumber(farm.lpTotalInQuoteToken).toNumber()); // USDC etc
       }
+      console.log(val)
       value = value.plus(val);
     }
   }

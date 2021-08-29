@@ -26,7 +26,7 @@ const UserMenu = () => {
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const hasProfile = isInitialized && !!profile
-  const avatarSrc = profile ? `/images/nfts/${profile.nft.images.sm}` : undefined
+  // const avatarSrc = profile ? `/images/nfts/${profile.nft.images.sm}` : undefined
   const hasLowBnbBalance = fetchStatus === FetchStatus.SUCCESS && balance.lte(LOW_BNB_BALANCE)
 
   if (!account) {
@@ -34,7 +34,7 @@ const UserMenu = () => {
   }
 
   return (
-    <UIKitUserMenu account={account} avatarSrc={avatarSrc}>
+    <UIKitUserMenu account={account}>
       <WalletUserMenuItem hasLowBnbBalance={hasLowBnbBalance} onPresentWalletModal={onPresentWalletModal} />
       <UserMenuItem as="button" onClick={onPresentTransactionModal}>
         {t('Transactions')}

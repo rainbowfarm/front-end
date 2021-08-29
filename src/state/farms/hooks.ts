@@ -97,7 +97,7 @@ export const useLpTokenPrice = (symbol: string) => {
 
 export const usePriceBnbBusd = (): BigNumber => {
   const bnbBusdFarm = useFarmFromPid(5)
-  return new BigNumber(bnbBusdFarm.quoteToken.busdPrice)
+  return new BigNumber(bnbBusdFarm.tokenPriceVsQuote)
 }
 
 export const usePriceCakeBusd = (): BigNumber => {

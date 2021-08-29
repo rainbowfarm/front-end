@@ -161,8 +161,14 @@ const Farms: React.FC = () => {
           console.log("Here")
           return farm
         }
- */        
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.tokenPriceVsQuote)
+ */     
+        let totalLiquidity = new BigNumber(0)
+        if (farm.quoteToken.symbol === "BUSD" || farm.quoteToken.symbol === "USDC" || farm.quoteToken.symbol === "DAI" ){
+          totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken)
+        }
+        else {
+          totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.tokenPriceVsQuote)
+        }
         const cakeRewardPerBlock = new BigNumber(farm.rnboPerBlock).times(new BigNumber(farm.poolWeight)).div(new BigNumber(10).pow(18))
         const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
         let apy = cakePrice.times(cakeRewardPerYear);

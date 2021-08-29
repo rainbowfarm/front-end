@@ -39,37 +39,15 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
     }
 
     const profileResponse = await profileContract.getUserProfile(address)
-    const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
-    const team = await getTeam(teamId)
+    const { userId, isActive } = transformProfileResponse(profileResponse)
     const username = await getUsername(address)
 
     // If the profile is not active the tokenId returns 0, which is still a valid token id
     // so only fetch the nft data if active
-    let nft: Nft
-    if (isActive) {
-      nft = await getNftByTokenId(nftAddress, tokenId)
-
-      // Save the preview image in a cookie so it can be used on the exchange
-      Cookies.set(
-        `profile_${address}`,
-        {
-          username,
-          avatar: `https://pancakeswap.finance/images/nfts/${nft?.images.sm}`,
-        },
-        { domain: 'pancakeswap.finance', secure: true, expires: 30 },
-      )
-    }
-
     const profile = {
       userId,
-      points,
-      teamId,
-      tokenId,
       username,
-      nftAddress,
       isActive,
-      nft,
-      team,
     } as Profile
 
     return { hasRegistered, profile }
