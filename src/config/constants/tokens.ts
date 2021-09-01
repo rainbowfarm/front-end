@@ -188,6 +188,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.adex.network',
   },
+  banana: {
+    symbol: 'BANANA',
+    address: {
+      56: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://apeswap.finance/',
+  },
+  mdx: {
+    symbol: 'MDX',
+    address: {
+      56: '0x9C65AB58d8d978DB963e63f2bfB7121627e3a739',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mdex.com/',
+  },
   bscpad: {
     symbol: 'BSCPAD',
     address: {
