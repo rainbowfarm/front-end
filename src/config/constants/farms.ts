@@ -10,7 +10,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'RNBO',
     lpAddresses: {
       97: '0x9d2d0a9e480c6dD04Eb4063e70e0c5cCC9280C01',
-      56: '0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602',
+      56: '0xDbADf0143C56f57CAf559e1ccE45290A4146fdA1',
     },
     token: tokens.rnbo,
     quoteToken: tokens.wbnb,

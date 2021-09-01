@@ -19,7 +19,7 @@ export const CAKE: { [chainId: number]: Token } = {
 export const RNBO: { [chainId: number]: Token } = {
   [ChainId.MAINNET]: new Token(
     ChainId.MAINNET,
-    '0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602',
+    '0xDbADf0143C56f57CAf559e1ccE45290A4146fdA1',
     18,
     'RNBO',
     'RainbowFarm Token',
@@ -92,7 +92,7 @@ const tokens = {
   rnbo: {
     symbol: 'RNBO',
     address: {
-      56: '0x2478132Df328Adf5A2A293ab8ec0dca6f82fE602',
+      56: '0xDbADf0143C56f57CAf559e1ccE45290A4146fdA1',
       97: '0x9d2d0a9e480c6dD04Eb4063e70e0c5cCC9280C01',
     },
     decimals: 18,
