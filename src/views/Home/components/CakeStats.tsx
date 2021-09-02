@@ -7,7 +7,7 @@ import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import { getCakeAddress, getRNBOAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
 import { useTotalValue } from 'state/hooks'
-import { useFarms,usePriceBnbBusd,usePriceCakeBusd } from 'state/farms/hooks'
+import { useFarmFromPid,usePriceBnbBusd,usePriceCakeBusd } from 'state/farms/hooks'
 import CardValue from './CardValue'
 
 const StyledCakeStats = styled(Card)`
@@ -28,20 +28,26 @@ const CakeStats = () => {
   const totalSupply = useTotalSupply()
   const burnedBalance = useBurnedBalance(getRNBOAddress())
   const RNBOPrice = usePriceCakeBusd();
-  const circSupply = totalSupply ? totalSupply.minus(burnedBalance) : new BigNumber(0);
+  const farms = useFarmFromPid(0);
+  const circSupply = totalSupply
   const cakeSupply = getBalanceNumber(circSupply);
   const marketCap = RNBOPrice.times(circSupply);
-  const rewardPerBlock = 4;
+  let rewardPerBlock = 4;
 
+   if(farms && farms.rnboPerBlock){
+    rewardPerBlock = new BigNumber(farms.rnboPerBlock).div(new BigNumber(10).pow(18)).toNumber();
+  }
+  console.log(getBalanceNumber(marketCap))
   return (
     <StyledCakeStats>
       <CardBody>
         <Heading size="xl" mb="24px">
           {t('Rainbow Stats')}
         </Heading>
+        <Row/>
         <Row>
           <Text fontSize="14px">{t('Market Cap')}</Text>
-          <CardValue fontSize="14px" value={getBalanceNumber(marketCap)} decimals={0} prefix="$" />
+          <Text fontSize="18px" bold> $ {marketCap && getBalanceNumber(marketCap).toFixed(0).toString()} </Text>
         </Row>
         <Row>
           <Text fontSize="14px">{t('Total Minted')}</Text>

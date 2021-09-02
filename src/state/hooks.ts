@@ -179,14 +179,11 @@ export const useTotalValue = (): BigNumber => {
   const farms = useFarms();
   const bnbPrice = usePriceBnbBusd();
   const cakePrice = usePriceCakeBusd();
-  console.log(cakePrice)
-  console.log(bnbPrice)
   let value = new BigNumber(0);
   for (let i = 0; i < farms.data.length; i++) {
     const farm = farms.data[i]
     if (new BigNumber(farm.lpTotalInQuoteToken).toNumber()) {
       let val;
-      console.log(farm)
       if (farm.quoteToken.symbol === "wBNB") {
         val = (bnbPrice.times(new BigNumber(farm.lpTotalInQuoteToken).toNumber()));
       }else if (farm.quoteToken.symbol === "RNBO") {
@@ -194,7 +191,6 @@ export const useTotalValue = (): BigNumber => {
       }else{
         val = (new BigNumber(farm.lpTotalInQuoteToken).toNumber()); // USDC etc
       }
-      console.log(val)
       value = value.plus(val);
     }
   }

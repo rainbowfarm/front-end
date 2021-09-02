@@ -11,7 +11,6 @@ export interface Call {
 interface MulticallOptions {
   requireSuccess?: boolean
 }
-
 const multicall = async <T = any>(abi: any[], calls: Call[]): Promise<T> => {
   try {
     const multi = getMulticallContract()
@@ -19,11 +18,11 @@ const multicall = async <T = any>(abi: any[], calls: Call[]): Promise<T> => {
 
     const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
     const { returnData } = await multi.aggregate(calldata)
-
-    const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
+    const res = returnData.map((call, i) => 
+    itf.decodeFunctionResult(calls[i].name, call))
     return res
   } catch (error) {
-    console.log(calls)
+    console.log(error)
     throw new Error('Ran out of coffee')
   }
 }

@@ -72,10 +72,8 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
 })
 
     const isPoolFinished = pool.isFinished
-
     const stakingTokenAddress = pool.stakingToken.address ? getAddress(pool.stakingToken.address).toLowerCase() : null
     const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-
     const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null
     const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
     // console.log(parsenumber(pool.tokenPerBlock)*(poolAllocPoints/totalAllocPoints))

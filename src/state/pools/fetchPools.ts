@@ -39,7 +39,6 @@ export const fetchTotalAllocPoints = async () => {
 
   const totalAllocPoints = await multicall(sousChefABI, callsTotalAllocPoints)
   const allocpoints = totalAllocPoints[0]
-  console.log(allocpoints)
   return allocpoints
 }
 

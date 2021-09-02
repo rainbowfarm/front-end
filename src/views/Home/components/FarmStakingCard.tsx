@@ -9,7 +9,7 @@ import { useAllHarvest } from 'hooks/useHarvest'
 import useTokenBalance from 'hooks/useTokenBalance'
 import UnlockButton from 'components/UnlockButton'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getCakeAddress, getRNBOAddress } from 'utils/addressHelpers'
 import useAllEarnings from 'hooks/useAllEarnings'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CakeHarvestBalance from './CakeHarvestBalance'
@@ -56,7 +56,7 @@ const FarmedStakingCard = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const farmsWithBalance = useFarmsWithBalance()
-  const cakeBalance = getBalanceNumber(useTokenBalance(getCakeAddress()).balance)
+  const cakeBalance = getBalanceNumber(useTokenBalance(getRNBOAddress()).balance)
   const rnboPrice = usePriceCakeBusd().toNumber()
   const allEarnings = useAllEarnings()
   const earningsSum = allEarnings.reduce((accum, earning) => {

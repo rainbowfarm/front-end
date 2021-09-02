@@ -37,21 +37,23 @@ export const transformPool = (pool: Pool): Pool => {
 export const getTokenPricesFromFarm = (farms: Farm[]) => {
   const rnbobusd = farms.find(x => x.pid === 1).tokenPriceVsQuote
   const bnbbusd = farms.find(x => x.pid === 5).tokenPriceVsQuote
+
   return farms.reduce((prices, farm) => {
     if(farm.pid !== 0){
     const quoteTokenAddress = getAddress(farm.quoteToken.address).toLocaleLowerCase()
     const tokenAddress = getAddress(farm.token.address).toLocaleLowerCase()
     /* eslint-disable no-param-reassign */
+    prices["0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3"] = 1;
     if (!prices[quoteTokenAddress]) {
       if(farm.quoteToken.symbol === "wBNB"){
-        prices[quoteTokenAddress] = bnbbusd
+        prices[quoteTokenAddress] = new BigNumber(bnbbusd).toNumber()
       }
       else if(farm.quoteToken.symbol === "BUSD"){
         prices[quoteTokenAddress] = 1
       }
       else{
-        console.log(farm)
-        prices[quoteTokenAddress] = farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD").tokenPriceVsQuote
+        prices[quoteTokenAddress] = farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD") ? new BigNumber(farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD").tokenPriceVsQuote).toNumber()
+        : farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "wBNB") ? new BigNumber(farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "wBNB").tokenPriceVsQuote).toNumber()*new BigNumber(bnbbusd).toNumber() : 0 
       }
     }
     if (!prices[tokenAddress]) {
@@ -62,7 +64,10 @@ export const getTokenPricesFromFarm = (farms: Farm[]) => {
         prices[tokenAddress] = new BigNumber(farm.tokenPriceVsQuote).toNumber()*new BigNumber(bnbbusd).toNumber()
       }
       else{
-        prices[tokenAddress] = new BigNumber(farm.tokenPriceVsQuote).toNumber()*new BigNumber(farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD").tokenPriceVsQuote).toNumber()
+        prices[tokenAddress] = farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD") ? 
+        new BigNumber(farm.tokenPriceVsQuote).toNumber()*new BigNumber(farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "BUSD").tokenPriceVsQuote).toNumber() 
+        : farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "wBNB") 
+          ? new BigNumber(farm.tokenPriceVsQuote).toNumber()*new BigNumber(farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "wBNB").tokenPriceVsQuote).toNumber()*(new BigNumber(bnbbusd).toNumber()) : 0
       }
     }
     }  /* eslint-enable no-param-reassign */
