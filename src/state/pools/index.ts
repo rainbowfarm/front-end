@@ -6,7 +6,7 @@ import { PoolsState, Pool, AppThunk } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
-import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking,fetchPoolsWithdrawFee, fetchPoolAllocPoint, fetchTotalAllocPoints } from './fetchPools'
+import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking,fetchPoolsWithdrawFee, fetchPoolAllocPoint, fetchTotalAllocPoints,fetchpoolInfo } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
@@ -48,18 +48,27 @@ const initialState: PoolsState = {
 export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch, getState) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
-  const allocPoints = await fetchPoolAllocPoint()
-  const allocPointsArr = Object.values(allocPoints)
+  // const allocPoints = await fetchPoolAllocPoint()
+  // const allocPointsArr = Object.values(allocPoints)
   const totalAllocPoints = await fetchTotalAllocPoints()
-  const poolWithdrawFeesObj = await fetchPoolsWithdrawFee()
-  const poolWithdrawFeesArr = Object.values(poolWithdrawFeesObj)
+  const poolsInfo = await fetchpoolInfo()
+  // const poolWithdrawFeesObj = await fetchPoolsWithdrawFee()
+  // const poolWithdrawFeesArr = Object.values(poolWithdrawFeesObj)
   const prices = getTokenPricesFromFarm(getState().farms.data)
   const liveData = poolsConfig.map((pool) => {
   const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
   const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
   let poolWithdrawFee = 0
   let poolAllocPoints = 0
-  poolWithdrawFeesArr.forEach(fees => {
+  
+  Object.values(poolsInfo).forEach(info => {
+    if(Object.values(info)[0] === pool.sousId) {
+      poolWithdrawFee = Object.values(info)[1].poolWithdrawFee.toNumber()
+      poolAllocPoints = Object.values(info)[1].allocPoint.toNumber()
+    }
+})
+  
+/*   poolWithdrawFeesArr.forEach(fees => {
       if(Object.values(fees)[0] === pool.sousId) {
         poolWithdrawFee = Object.values(fees)[1]
       }
@@ -70,6 +79,7 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
       poolAllocPoints = Object.values(points)[1]
     }
 })
+ */
 
     const isPoolFinished = pool.isFinished
     const stakingTokenAddress = pool.stakingToken.address ? getAddress(pool.stakingToken.address).toLowerCase() : null

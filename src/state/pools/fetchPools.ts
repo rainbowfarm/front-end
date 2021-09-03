@@ -43,6 +43,25 @@ export const fetchTotalAllocPoints = async () => {
 }
 
 
+export const fetchpoolInfo = async () => {
+  const pools = poolsConfig
+  const callsPoolInfo = pools.map((poolConfig) => {
+    return {
+      address: getAddress(poolConfig.contractAddress),
+      name: 'poolInfo',
+      params : [poolConfig.sousId]
+    }
+  })
+  const poolInfo = await multicall(sousChefABI, callsPoolInfo)
+  return {
+     ...pools.map((p, index) => ({
+      sousId: p.sousId,
+      // poolWithdrawFee : new BigNumber((poolInfo[index].poolWithdrawFee).toNumber()).toJSON(),
+      poolInfo : poolInfo[index],
+    })),
+  }
+}
+
 export const fetchPoolsWithdrawFee = async () => {
   const pools = poolsConfig
   const callsPoolInfo = pools.map((poolConfig) => {
@@ -53,6 +72,7 @@ export const fetchPoolsWithdrawFee = async () => {
     }
   })
   const poolInfo = await multicall(sousChefABI, callsPoolInfo)
+  console.log(poolInfo)
   return {
      ...pools.map((p, index) => ({
       sousId: p.sousId,

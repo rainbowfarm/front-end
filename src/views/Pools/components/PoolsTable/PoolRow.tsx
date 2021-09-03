@@ -9,6 +9,7 @@ import WithdrawFeeCell from './Cells/WithdrawFeeCell'
 import AprCell from './Cells/AprCell'
 import TotalStakedCell from './Cells/TotalStakedCell'
 import ExpandActionCell from './Cells/ExpandActionCell'
+import MultiplierCell from './Cells/MultiplierCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 
 interface PoolRowProps {
@@ -39,6 +40,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         <AprCell pool={pool} performanceFee={0} />
         {(isLg || isXl) && <TotalStakedCell pool={pool} />}
+        {(isLg || isXl) && <MultiplierCell pool={pool} />}
         {isXl && <WithdrawFeeCell pool={pool} />}
         <ExpandActionCell expanded={expanded} isFullLayout={isMd || isLg || isXl} />
       </StyledRow>

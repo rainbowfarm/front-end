@@ -53,6 +53,7 @@ export interface Pool extends PoolConfig {
   isAutoVault?: boolean
   poolWithdrawFee? : number
   poolWeight?: number
+  poolAllocPoints?: number
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber
