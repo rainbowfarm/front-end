@@ -113,9 +113,8 @@ const fetchFarms = async () => {
           name: 'rnboPerBlock',
         },
       ])
-
       const allocPoint = new BigNumber(info.allocPoint._hex)
-      const farmWithdrawFees = new BigNumber(info.poolWithdrawFee._hex)
+      const farmWithdrawFees = new BigNumber(info.poolWithdrawFee.toNumber())
       const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
 
       return {

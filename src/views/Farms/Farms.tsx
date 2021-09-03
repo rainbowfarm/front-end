@@ -110,6 +110,7 @@ const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
   return null
 }
 
+
 const Farms: React.FC = () => {
   const { isDark, toggleTheme } = useTheme()
   const { path } = useRouteMatch()

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { PoolsState, Pool, CakeVault, VaultFees, VaultUser, AppThunk } from 'state/types'
+import { PoolsState, Pool, AppThunk } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
@@ -82,10 +82,9 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
           stakingTokenPrice,
           earningTokenPrice,
           getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-          parseFloat(pool.tokenPerBlock)*(poolAllocPoints/totalAllocPoints),
+          parseFloat(pool.tokenPerBlock)*(poolAllocPoints/new BigNumber(totalAllocPoints).toNumber()),
         )
       : 0
-
     return {
       ...blockLimit,
       ...totalStaking,

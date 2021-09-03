@@ -37,7 +37,6 @@ const CakeStats = () => {
    if(farms && farms.rnboPerBlock){
     rewardPerBlock = new BigNumber(farms.rnboPerBlock).div(new BigNumber(10).pow(18)).toNumber();
   }
-  console.log(getBalanceNumber(marketCap))
   return (
     <StyledCakeStats>
       <CardBody>

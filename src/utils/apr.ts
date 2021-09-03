@@ -17,9 +17,10 @@ export const getPoolApr = (
   tokenPerBlock: number,
 ): number => {
   const totalRewardPricePerYear = new BigNumber(rewardTokenPrice).times(tokenPerBlock).times(BLOCKS_PER_YEAR)
-  const totalStakingTokenInPool = totalStaked > 0 ? new BigNumber(stakingTokenPrice).times(totalStaked) : new BigNumber(stakingTokenPrice)
-  const apr = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
+  const totalStakingTokenInPool = new BigNumber(stakingTokenPrice).times(totalStaked)
+  const apr = totalStakingTokenInPool.toNumber() > 0 ? totalRewardPricePerYear.div(totalStakingTokenInPool).times(100) : totalRewardPricePerYear
   return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
+  
 }
 
 /**
@@ -37,14 +38,11 @@ export const getFarmApr = (
 ): { cakeRewardsApr: number; lpRewardsApr: number } => {
   const yearlyCakeRewardAllocation = CAKE_PER_YEAR.times(poolWeight)
   const cakeRewardsApr = yearlyCakeRewardAllocation.times(cakePriceUsd.toNumber()).div(poolLiquidityUsd).times(100)
-  console.log(cakeRewardsApr)
   let cakeRewardsAprAsNumber = null
   if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
     cakeRewardsAprAsNumber = cakeRewardsApr.toNumber()
   }
   const lpRewardsApr = lpAprs[farmAddress?.toLocaleLowerCase()] ?? 0
-  console.log(cakeRewardsApr)
-  console.log(lpRewardsApr)
   return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr }
 }
 
