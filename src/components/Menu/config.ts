@@ -52,9 +52,59 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     ],
   },
   {
+    label: 'Vote',
+    icon: 'MoreIcon',
+    items: [
+      {
+        label: 'Coinhunt',
+        href: 'https://coinhunt.cc/coin/1741346273',
+      },
+      {
+        label: 'Coinsniper',
+        href: 'https://coinsniper.net/coin/13814',
+      },
+      {
+        label: 'GemFinder',
+        href: 'https://gemfinder.cc/gem/3373',
+      },
+      {
+        label: 'RivalFinance',
+        href: 'https://rival.finance/0xDbADf0143C56f57CAf559e1ccE45290A4146fdA1',
+      },
+      {
+        label: 'DappRadar',
+        href: 'https://dappradar.com/binance-smart-chain/defi/rainbow-farm-finance',
+      },
+      {
+        label: 'GemHunters',
+        href: 'https://gemhunters.net/coin/rainbow/',
+      },
+      {
+        label: 'Coinalpha',
+        href: 'https://coinalpha.app/token/0xDbADf0143C56f57CAf559e1ccE45290A4146fdA1',
+      },
+      {
+        label: 'Coinmooner',
+        href: 'https://coinmooner.com/coin/4163',
+      },
+      {
+        label: 'Freshcoins',
+        href: 'https://freshcoins.io/vpVNKClw4JwBqhFp6zyR/coin/rainbow/rnbo.',
+      },
+      {
+        label: 'Coindiscovery',
+        href: 'https://coindiscovery.app/coin/rainbow',
+      },
+    ]
+  },
+  {
     label: t('More'),
     icon: 'MoreIcon',
     items: [
+      {
+        label: t('Listings'),
+        href: 'https://app.gitbook.com/@dilkushp/s/rainbowfarmfinance/listings'
+      },
       {
         label: t('Contracts'),
         href: 'https://docs.rainbowfarm.finance/contract'

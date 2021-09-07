@@ -52,7 +52,7 @@ const MultiplierCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
 
 
   return (
-    <StyledCell>
+    <StyledCell role="cell">
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('Multiplier')}

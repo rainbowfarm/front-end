@@ -7,11 +7,12 @@ import { useWeb3React } from '@web3-react/core'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
+import moment from 'moment'
 import TwitterCard from './components/TwitterCard'
 import TotalValueLockedCard from './components/TotalValueLockedCard'
 import CakeStats from './components/CakeStats'
 import FarmStakingCard from './components/FarmStakingCard'
-
+import CountDownTimer from './components/CountDownTimer'
 
 const Hero = styled.div`
   align-items: center;
@@ -60,7 +61,12 @@ const Cards = styled(BaseLayout)`
 const Home: React.FC = () => {
 
   const { t } = useTranslation()
-
+  const farmsstarttimestamp = moment(1631296800000)
+  const now = moment(Date.now())
+  const diff = farmsstarttimestamp.diff(now)
+  const diffDuration = moment.duration(diff)
+  console.log(diffDuration.hours())
+  const timetofarm = {hours:diffDuration.hours()+diffDuration.days()*24, minutes: diffDuration.minutes(), seconds: diffDuration.seconds()}
 
   return (
     <>
@@ -73,6 +79,14 @@ const Home: React.FC = () => {
         <Heading as="h1" scale="md" mt="10px" mb="24px" color="secondary">
           {t('Farming will begin at ')}<a href="https://bscscan.com/block/countdown/10800000" rel="noreferrer" target="_blank">block #10800000</a>
         </Heading>  
+        <Heading mt="40px" mb="40px">
+        <Text fontSize="24px" bold color="#000083">
+        {t('Time to Farm Start : ')}
+        </Text>
+        <Text fontSize="100px" bold color="#000083">
+          <CountDownTimer hoursMinSecs={timetofarm}/>
+        </Text>
+        </Heading>
       </Hero>
       <div>
         <Cards>
