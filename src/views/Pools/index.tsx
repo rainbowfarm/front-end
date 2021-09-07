@@ -77,7 +77,7 @@ const ControlStretch = styled(Flex)`
   }
 `
 
-const NUMBER_OF_POOLS_VISIBLE = 12
+const NUMBER_OF_POOLS_VISIBLE = 25
 
 const Pools: React.FC = () => {
 

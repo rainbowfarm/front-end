@@ -6,7 +6,7 @@ import { PoolsState, Pool, AppThunk } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
-import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking,fetchPoolsWithdrawFee, fetchPoolAllocPoint, fetchTotalAllocPoints,fetchpoolInfo } from './fetchPools'
+import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking, fetchTotalAllocPoints,fetchpoolInfo } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,

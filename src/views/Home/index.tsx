@@ -65,7 +65,6 @@ const Home: React.FC = () => {
   const now = moment(Date.now())
   const diff = farmsstarttimestamp.diff(now)
   const diffDuration = moment.duration(diff)
-  console.log(diffDuration.hours())
   const timetofarm = {hours:diffDuration.hours()+diffDuration.days()*24, minutes: diffDuration.minutes(), seconds: diffDuration.seconds()}
 
   return (

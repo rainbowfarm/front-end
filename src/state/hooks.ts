@@ -7,7 +7,10 @@ import { useAppDispatch } from 'state'
 import Nfts from 'config/constants/nfts'
 import { QuoteToken } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
+import { BIG_TEN } from 'utils/bigNumber'
 import { useFarms,usePriceBnbBusd,usePriceCakeBusd } from 'state/farms/hooks'
+import { useFetchPublicPoolsData, usePools } from 'state/pools/hooks'
+import { fetchpoolInfo, fetchPoolsTotalStaking } from 'state/pools/fetchPools'
 import { State,Farm, FarmsState, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from './types'
 import { fetchWalletNfts } from './collectibles'
 import { parseBigNumberObj } from './predictions/helpers'
@@ -175,8 +178,16 @@ export const useGetCollectibles = () => {
   }
 }
 
+const fetchpoolsdata = () => async () => {
+  const poolsData = await fetchPoolsTotalStaking()
+  return poolsData
+}
+
+
 export const useTotalValue = (): BigNumber => {
   const farms = useFarms();
+  const { account } = useWeb3React()
+  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account)
   const bnbPrice = usePriceBnbBusd();
   const cakePrice = usePriceCakeBusd();
   let value = new BigNumber(0);
@@ -193,6 +204,13 @@ export const useTotalValue = (): BigNumber => {
       }
       value = value.plus(val);
     }
+  }
+
+  for (let i=0;i<poolsWithoutAutoVault.length;i++)
+  {
+    const pool = poolsWithoutAutoVault[i]
+    const val = pool.totalStaked.multipliedBy(pool.stakingTokenPrice).div(BIG_TEN.pow(pool.stakingToken.decimals))
+    value = value.plus(val)
   }
   const output = value.toString() === Infinity.toString() ? new BigNumber(0): value;
   return output;
