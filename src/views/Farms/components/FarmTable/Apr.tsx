@@ -56,7 +56,7 @@ const Apr: React.FC<AprProps> = ({
     <Container>
       {originalValue ? (
         <>
-          <AprWrapper>{(new BigNumber(value).toFixed(2))}%</AprWrapper>
+          <AprWrapper>{(new BigNumber(value).toFormat(2))}%</AprWrapper>
           {!hideButton && (
             <ApyButton
               lpLabel={lpLabel}

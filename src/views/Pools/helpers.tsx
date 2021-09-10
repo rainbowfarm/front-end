@@ -20,8 +20,7 @@ export const convertSharesToCake = (
 const AUTO_VAULT_COMPOUND_FREQUENCY = 288
 const MANUAL_POOL_COMPOUND_FREQUENCY = 1
 
-export const getAprData = (pool: Pool, performanceFee: number) => {
-  
+export const getAprData = (pool: Pool, performanceFee: number) => {  
   const { earningTokenPrice, apr } = pool
   // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
   const isHighValueToken = Math.round(earningTokenPrice / 1000) > 0

@@ -34,6 +34,11 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     href: '/pools',
   },
   {
+    label: t('VFat'),
+    icon: 'NftIcon',
+    href: 'https://vfat.tools/bsc/rainbow',
+  },
+  {
     label: 'Charts',
     icon: 'InfoIcon',
     items: [
@@ -94,6 +99,10 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: 'Coindiscovery',
         href: 'https://coindiscovery.app/coin/rainbow',
+      },
+      {
+        label: 'Coinscout',
+        href: 'https://www.coinscout.cc/listing/rainbow/',
       },
     ]
   },

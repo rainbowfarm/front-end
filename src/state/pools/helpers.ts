@@ -25,7 +25,6 @@ export const transformUserData = (userData: UserData) => {
 
 export const transformPool = (pool: Pool): Pool => {
   const { totalStaked, stakingLimit, userData, ...rest } = pool
-
   return {
     ...rest,
     userData: transformUserData(userData),
@@ -36,8 +35,7 @@ export const transformPool = (pool: Pool): Pool => {
 
 export const getTokenPricesFromFarm = (farms: Farm[]) => {
   const rnbobusd = farms.find(x => x.pid === 1).tokenPriceVsQuote
-  const bnbbusd = farms.find(x => x.pid === 5).tokenPriceVsQuote
-
+  const bnbbusd = new BigNumber(1).div(farms.find(x => x.pid === 5).tokenPriceVsQuote)  
   return farms.reduce((prices, farm) => {
     if(farm.pid !== 0){
     const quoteTokenAddress = getAddress(farm.quoteToken.address).toLocaleLowerCase()
@@ -70,6 +68,7 @@ export const getTokenPricesFromFarm = (farms: Farm[]) => {
           ? new BigNumber(farm.tokenPriceVsQuote).toNumber()*new BigNumber(farms.find(x => x.pid !== 0 && x.token.symbol === farm.quoteToken.symbol && x.quoteToken.symbol === "wBNB").tokenPriceVsQuote).toNumber()*(new BigNumber(bnbbusd).toNumber()) : 0
       }
     }
+    
     }  /* eslint-enable no-param-reassign */
     return prices
   }, {})

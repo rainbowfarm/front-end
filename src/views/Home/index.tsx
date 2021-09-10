@@ -61,7 +61,7 @@ const Cards = styled(BaseLayout)`
 const Home: React.FC = () => {
 
   const { t } = useTranslation()
-  const farmsstarttimestamp = moment(1631296800000)
+  const farmsstarttimestamp = moment(1631300592000)
   const now = moment(Date.now())
   const diff = farmsstarttimestamp.diff(now)
   const diffDuration = moment.duration(diff)

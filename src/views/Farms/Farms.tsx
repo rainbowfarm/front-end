@@ -174,6 +174,7 @@ const Farms: React.FC = () => {
         const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
         let apy = cakePrice.times(cakeRewardPerYear);
         let totalValue = new BigNumber(farm.lpTotalInQuoteToken || 0);
+        apy = apy.minus(totalValue).times(100)
 /*         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
@@ -184,7 +185,7 @@ const Farms: React.FC = () => {
           if(totalValue.comparedTo(0) > 0){
             apy = apy.div(totalValue);
           }
-          return { ...farm, apr: apy.toNumber(), lpRewardsApr: apy.toNumber(), liquidity: totalLiquidity, farmWithdrawFees:farm.farmWithdrawFees }
+          return { ...farm, apr: apy.toNumber(), lpRewardsApr: 0, liquidity: totalLiquidity, farmWithdrawFees:farm.farmWithdrawFees }
       })
 
       if (query) {
