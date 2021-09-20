@@ -198,7 +198,7 @@ export const useTotalValue = (): BigNumber => {
     if (new BigNumber(farm.lpTotalInQuoteToken).toNumber()) {
       let val;
       if (farm.quoteToken.symbol === "wBNB") {
-        val = (bnbPrice.times(new BigNumber(farm.lpTotalInQuoteToken).toNumber()));
+        val = (new BigNumber(1).div(bnbPrice).times(new BigNumber(farm.lpTotalInQuoteToken).toNumber()));
       }else if (farm.quoteToken.symbol === "RNBO") {
         val = (cakePrice.times(new BigNumber(farm.lpTotalInQuoteToken).toNumber()));
       }else{

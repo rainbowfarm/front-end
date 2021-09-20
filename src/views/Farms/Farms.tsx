@@ -8,8 +8,9 @@ import { ChainId } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
-import { useFarms, usePollFarmsData, usePriceCakeBusd, usePriceBnbBusd } from 'state/farms/hooks'
+import { useFarms, usePollFarmsData, usePriceCakeBusd, usePriceBnbBusd, GetTokenPrice } from 'state/farms/hooks'
 import usePersistState from 'hooks/usePersistState'
+import { getTokenPricesFromFarm } from 'state/pools/helpers'
 import { Farm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -119,6 +120,7 @@ const Farms: React.FC = () => {
   const { data: farmsLP, userDataLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
+  const ethPrice = GetTokenPrice("ETH")
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' })
   const { account } = useWeb3React()
@@ -172,6 +174,9 @@ const Farms: React.FC = () => {
         {
           totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(new BigNumber(1).div(bnbPrice))
         }
+        else if(farm.quoteToken.symbol === "ETH"){
+          totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(ethPrice)
+        }
         else {
           totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.tokenPriceVsQuote)
         }
@@ -179,12 +184,12 @@ const Farms: React.FC = () => {
         const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
         let apy = cakePrice.times(cakeRewardPerYear);
         let totalValue = new BigNumber(farm.lpTotalInQuoteToken || 0);
-        apy = apy.minus(totalLiquidity).times(100)
+        // apy = apy.minus(totalLiquidity).times(100)
+        apy = apy.times(100)
 /*         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
  */
-          console.log(totalValue.toNumber())
           if (farm.quoteToken.symbol === "RNBO") {
             totalValue = totalValue.times(cakePrice);
           }
@@ -202,7 +207,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPR
     },
-    [cakePrice, bnbPrice, query],
+    [cakePrice, bnbPrice,ethPrice, query],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {

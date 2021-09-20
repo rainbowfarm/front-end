@@ -58,6 +58,11 @@ export const useFarmFromLpSymbol = (lpSymbol: string): Farm => {
   return farm
 }
 
+export const useFarmFromSymbol = (symbol: string): Farm => {
+  const farm = useSelector((state: State) => state.farms.data.find((f) => f.token.symbol === symbol))
+  return farm
+}
+
 export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
 
@@ -72,11 +77,17 @@ export const useFarmUser = (pid) => {
 // Return the base token price for a farm, from a given pid
 export const useBusdPriceFromPid = (pid: number): BigNumber => {
   const farm = useFarmFromPid(pid)
-  return farm && new BigNumber(farm.token.busdPrice)
+  const bnbPrice = usePriceBnbBusd()
+  let tokenprice = new BigNumber(farm.tokenPriceVsQuote).toNumber()
+  if(farm.quoteToken.symbol === "wBNB"){
+    tokenprice *= new BigNumber(1).div(bnbPrice).toNumber()
+  }
+  return farm && new BigNumber(tokenprice)
 }
 
 export const useLpTokenPrice = (symbol: string) => {
   const farm = useFarmFromLpSymbol(symbol)
+  console.log(symbol)
   const farmTokenPriceInUsd = useBusdPriceFromPid(farm.pid)
   let lpTokenPrice = BIG_ZERO
 
@@ -91,6 +102,14 @@ export const useLpTokenPrice = (symbol: string) => {
   }
 
   return lpTokenPrice
+}
+
+export const GetTokenPrice = (symbol: string) => {
+  const farm = useFarmFromSymbol(symbol)
+  const farmTokenPriceInUsd = useBusdPriceFromPid(farm.pid)
+  
+
+  return farmTokenPriceInUsd
 }
 
 // /!\ Deprecated , use the BUSD hook in /hooks

@@ -75,9 +75,12 @@ const Home: React.FC = () => {
         {t('Defi Yield Farming with lowest fees')}
         </Heading>
         <Heading as="h1" scale="md" mt="10px" mb="24px" color="secondary">
+          {t('Farming has began')}
+        </Heading>                
+{/*         <Heading as="h1" scale="md" mt="10px" mb="24px" color="secondary">
           {t('Farming will begin at ')}<a href="https://bscscan.com/block/countdown/11080033" rel="noreferrer" target="_blank">block #11080033</a>
         </Heading>        
-        <Heading mt="40px" mb="40px">
+ */}{/*         <Heading mt="40px" mb="40px">
         <Text fontSize="24px" bold color="#000083">
         {t('Time to Farm Start : ')}
         </Text>
@@ -85,7 +88,7 @@ const Home: React.FC = () => {
           <CountDownTimer hoursMinSecs={timetofarm}/>
         </Text>
         </Heading>
-        </Hero>
+ */}        </Hero>
       <div>
         <Cards>
           <FarmStakingCard />
