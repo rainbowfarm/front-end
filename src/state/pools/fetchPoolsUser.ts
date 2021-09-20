@@ -94,7 +94,7 @@ export const fetchUserPendingRewards = async (account) => {
     const calls = nonMasterPools.map((p) => ({
       address: getAddress(p.contractAddress),
       name: 'getActualWithdrawFeeRate',
-      params: [p.sousId],
+      params: [account,p.sousId],
     }))
     const res = await multicall(sousChefABI, calls)
     const withdrawFee = nonMasterPools.reduce(

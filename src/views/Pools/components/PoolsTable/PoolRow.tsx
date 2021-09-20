@@ -40,7 +40,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         <AprCell pool={pool} performanceFee={0} />
         {(isLg || isXl) && <TotalStakedCell pool={pool} />}
-        {(isLg || isXl) && <MultiplierCell pool={pool} />}
+{/*         {(isLg || isXl) && <MultiplierCell pool={pool} />} */}
         {isXl && <WithdrawFeeCell pool={pool} />}
         <ExpandActionCell expanded={expanded} isFullLayout={isMd || isLg || isXl} />
       </StyledRow>

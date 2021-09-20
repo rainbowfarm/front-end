@@ -33,12 +33,12 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     icon: 'PoolIcon',
     href: '/pools',
   },
-  {
+/*   {
     label: t('VFat'),
     icon: 'NftIcon',
     href: 'https://vfat.tools/bsc/rainbow',
   },
-  {
+ */  {
     label: 'Charts',
     icon: 'InfoIcon',
     items: [

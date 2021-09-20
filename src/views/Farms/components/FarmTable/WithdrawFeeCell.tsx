@@ -32,6 +32,7 @@ const Container = styled.div`
 const WithdrawFeeCell: React.FC<FeeProps> = ({ userwithdrawFee,poolWithdrawFee }) => {
   const { t } = useTranslation()
   const withdrawFees = ((userwithdrawFee ? userwithdrawFee.toNumber() : (poolWithdrawFee).toNumber())/100)
+  // const withdrawFees = (poolWithdrawFee.toNumber()/100)
 
   return (
     <Container>

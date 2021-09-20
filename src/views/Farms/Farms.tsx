@@ -8,7 +8,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
-import { useFarms, usePollFarmsData, usePriceCakeBusd } from 'state/farms/hooks'
+import { useFarms, usePollFarmsData, usePriceCakeBusd, usePriceBnbBusd } from 'state/farms/hooks'
 import usePersistState from 'hooks/usePersistState'
 import { Farm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -118,6 +118,7 @@ const Farms: React.FC = () => {
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
+  const bnbPrice = usePriceBnbBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' })
   const { account } = useWeb3React()
@@ -164,8 +165,12 @@ const Farms: React.FC = () => {
         }
  */     
         let totalLiquidity = new BigNumber(0)
-        if (farm.quoteToken.symbol === "BUSD" || farm.quoteToken.symbol === "USDC" || farm.quoteToken.symbol === "DAI" ){
+        if (farm.quoteToken.symbol === "BUSD" || farm.quoteToken.symbol === "USDC" || farm.quoteToken.symbol === "DAI"){
           totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken)
+        }
+        else if(farm.quoteToken.symbol === "wBNB")
+        {
+          totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(new BigNumber(1).div(bnbPrice))
         }
         else {
           totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.tokenPriceVsQuote)
@@ -174,16 +179,17 @@ const Farms: React.FC = () => {
         const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
         let apy = cakePrice.times(cakeRewardPerYear);
         let totalValue = new BigNumber(farm.lpTotalInQuoteToken || 0);
-        apy = apy.minus(totalValue).times(100)
+        apy = apy.minus(totalLiquidity).times(100)
 /*         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
  */
+          console.log(totalValue.toNumber())
           if (farm.quoteToken.symbol === "RNBO") {
             totalValue = totalValue.times(cakePrice);
           }
-          if(totalValue.comparedTo(0) > 0){
-            apy = apy.div(totalValue);
+          if(totalLiquidity.comparedTo(0) > 0){
+            apy = apy.div(totalLiquidity);
           }
           return { ...farm, apr: apy.toNumber(), lpRewardsApr: 0, liquidity: totalLiquidity, farmWithdrawFees:farm.farmWithdrawFees }
       })
@@ -196,7 +202,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPR
     },
-    [cakePrice, query],
+    [cakePrice, bnbPrice, query],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -291,7 +297,6 @@ const Farms: React.FC = () => {
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
-
     const row: RowProps = {
       apr: {
         // value: getDisplayApr(farm.apr, farm.lpRewardsApr),
@@ -316,11 +321,11 @@ const Farms: React.FC = () => {
       liquidity: {
         liquidity: farm.liquidity,
       },
-      multiplier: {
+       multiplier: {
         multiplier: farm.multiplier,
-      },
+      }, 
       withdrawFee: {
-        userwithdrawFee: farm.userData.withdrawFees,
+        userwithdrawFee: account ? farm.userData.withdrawFees : new BigNumber(farm.farmWithdrawFees),
         poolWithdrawFee: new BigNumber(farm.farmWithdrawFees),
       },
       details: farm,
@@ -416,7 +421,7 @@ const Farms: React.FC = () => {
         </Heading>
       </PageHeader>
       <Page>
-        <ControlContainer>
+          <ControlContainer>
           <ViewControls>
             <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
             <ToggleWrapper>

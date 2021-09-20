@@ -61,12 +61,11 @@ const Cards = styled(BaseLayout)`
 const Home: React.FC = () => {
 
   const { t } = useTranslation()
-  const farmsstarttimestamp = moment(1631300592000)
+  const farmsstarttimestamp = moment(1632144300000)
   const now = moment(Date.now())
   const diff = farmsstarttimestamp.diff(now)
   const diffDuration = moment.duration(diff)
   const timetofarm = {hours:diffDuration.hours()+diffDuration.days()*24, minutes: diffDuration.minutes(), seconds: diffDuration.seconds()}
-
   return (
     <>
     <Page>
@@ -76,8 +75,8 @@ const Home: React.FC = () => {
         {t('Defi Yield Farming with lowest fees')}
         </Heading>
         <Heading as="h1" scale="md" mt="10px" mb="24px" color="secondary">
-          {t('Farming will begin at ')}<a href="https://bscscan.com/block/countdown/10800000" rel="noreferrer" target="_blank">block #10800000</a>
-        </Heading>  
+          {t('Farming will begin at ')}<a href="https://bscscan.com/block/countdown/11080033" rel="noreferrer" target="_blank">block #11080033</a>
+        </Heading>        
         <Heading mt="40px" mb="40px">
         <Text fontSize="24px" bold color="#000083">
         {t('Time to Farm Start : ')}
@@ -86,7 +85,7 @@ const Home: React.FC = () => {
           <CountDownTimer hoursMinSecs={timetofarm}/>
         </Text>
         </Heading>
-      </Hero>
+        </Hero>
       <div>
         <Cards>
           <FarmStakingCard />

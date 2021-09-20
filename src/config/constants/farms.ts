@@ -61,18 +61,7 @@ const farms: FarmConfig[] = [
     isTokenOnly : false,
   },
   {
-    pid: 10,
-    lpSymbol: 'MDX-BNB LP',
-    lpAddresses: {
-      97: '0xe0e92035077c39594793e61802a350347c320cf2',
-      56: '0xAf9Aa53146C5752BF6068A84B970E9fBB22a87bc',
-    },
-    token: tokens.mdx,
-    quoteToken: tokens.wbnb,
-    isTokenOnly : false,
-  },
-  {
-    pid: 13,
+    pid: 11,
     lpSymbol: 'BTCB-ETH LP',
     lpAddresses: {
       97: '0xe0e92035077c39594793e61802a350347c320cf2',
@@ -83,7 +72,7 @@ const farms: FarmConfig[] = [
     isTokenOnly : false,
   },
   {
-    pid: 15,
+    pid: 12,
     lpSymbol: 'USDT-BNB LP',
     lpAddresses: {
       97: '0xe0e92035077c39594793e61802a350347c320cf2',
@@ -94,7 +83,7 @@ const farms: FarmConfig[] = [
     isTokenOnly : false,
   },
   {
-    pid: 16,
+    pid: 13,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddresses: {
       97: '0xe0e92035077c39594793e61802a350347c320cf2',
@@ -105,40 +94,7 @@ const farms: FarmConfig[] = [
     isTokenOnly : false,
   },
   {
-    pid: 17,
-    lpSymbol: 'BANANA-BNB LP',
-    lpAddresses: {
-      97: '0xe0e92035077c39594793e61802a350347c320cf2',
-      56: '0xF65C1C0478eFDe3c19b49EcBE7ACc57BB6B1D713',
-    },
-    token: tokens.banana,
-    quoteToken: tokens.wbnb,
-    isTokenOnly : false,
-  },
-  {
-    pid: 18,
-    lpSymbol: 'btcEPS LP',
-    lpAddresses: {
-      97: '0xe0e92035077c39594793e61802a350347c320cf2',
-      56: '0x2a435Ecb3fcC0E316492Dc1cdd62d0F189be5640',
-    },
-    token: tokens.btcb,
-    quoteToken: tokens.busd,
-    isTokenOnly : false,
-  },
-  {
-    pid: 19,
-    lpSymbol: '3EPS LP',
-    lpAddresses: {
-      97: '0xe0e92035077c39594793e61802a350347c320cf2',
-      56: '0xaF4dE8E872131AE328Ce21D909C74705d3Aaf452',
-    },
-    token: tokens.usdt,
-    quoteToken: tokens.busd,
-    isTokenOnly : false,
-  },
-  {
-    pid: 20,
+    pid: 14,
     lpSymbol: 'USDT-BUSD LP',
     lpAddresses: {
       97: '0xe0e92035077c39594793e61802a350347c320cf2',
@@ -149,7 +105,7 @@ const farms: FarmConfig[] = [
     isTokenOnly : false,
   },
   {
-    pid: 21,
+    pid: 15,
     lpSymbol: 'BTCB-BNB LP',
     lpAddresses: {
       97: '0xe0e92035077c39594793e61802a350347c320cf2',
@@ -160,7 +116,7 @@ const farms: FarmConfig[] = [
     isTokenOnly : false,
   },
   {
-    pid: 22,
+    pid: 16,
     lpSymbol: 'USDC-BUSD LP',
     lpAddresses: {
       97: '0xe0e92035077c39594793e61802a350347c320cf2',
@@ -171,7 +127,7 @@ const farms: FarmConfig[] = [
     isTokenOnly : false,
   },
   {
-    pid: 23,
+    pid: 17,
     lpSymbol: 'ETH-BNB LP',
     lpAddresses: {
       97: '0xe0e92035077c39594793e61802a350347c320cf2',

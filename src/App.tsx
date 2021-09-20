@@ -12,14 +12,13 @@ import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/Loader/PageLoader'
-import EasterEgg from './components/EasterEgg'
 import history from './routerHistory'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
-const Pools = lazy(() => import('./views/Pools'))
+const Pools = lazy(() => import('./views/Pools/index'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
 

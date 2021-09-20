@@ -33,6 +33,7 @@ export interface Farm extends FarmConfig {
   poolWeight?: SerializedBigNumber
   rnboPerBlock?: SerializedBigNumber
   farmWithdrawFees? : SerializedBigNumber
+  tokenAmount?: SerializedBigNumber
   userData?: {
     allowance: string
     tokenBalance: string

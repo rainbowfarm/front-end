@@ -134,7 +134,7 @@ const ValueWrapper = styled.div`
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   details,
   apr,
-  multiplier,
+  // multiplier,
   liquidity,
   userDataReady,
   expanded,
@@ -171,11 +171,11 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           <Text>{t('APR')}</Text>
           <Apr {...apr} />
         </ValueWrapper>
-        <ValueWrapper>
+{/*         <ValueWrapper>
           <Text>{t('Multiplier')}</Text>
           <Multiplier {...multiplier} />
         </ValueWrapper>
-        <ValueWrapper>
+ */}        <ValueWrapper>
           <Text>{t('Liquidity')}</Text>
           <Liquidity {...liquidity} />
         </ValueWrapper>
