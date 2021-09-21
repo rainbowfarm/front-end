@@ -55,14 +55,16 @@ const FarmedStakingCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const farmsWithBalance = useFarmsWithBalance()
+  const {farmsWithBalances, poolsWithBalances} = useFarmsWithBalance()
   const cakeBalance = getBalanceNumber(useTokenBalance(getRNBOAddress()).balance)
   const rnboPrice = usePriceCakeBusd().toNumber()
   const allEarnings = useAllEarnings()
   const earningsSum = allEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
-  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
+  const balancesWithValue = farmsWithBalances.filter((balanceType) => balanceType.balance.toNumber() > 0)
+  console.log(farmsWithBalances)
+  console.log(poolsWithBalances)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const harvestAllFarms = useCallback(async () => {
