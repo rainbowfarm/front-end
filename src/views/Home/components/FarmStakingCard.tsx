@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { useFarms,usePriceBnbBusd,usePriceCakeBusd } from 'state/farms/hooks'
-import { useAllHarvest } from 'hooks/useHarvest'
+import { useAllHarvest, usePoolAllHarvest } from 'hooks/useHarvest'
 import useTokenBalance from 'hooks/useTokenBalance'
 import UnlockButton from 'components/UnlockButton'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
@@ -62,22 +62,23 @@ const FarmedStakingCard = () => {
   const earningsSum = allEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
-  const balancesWithValue = farmsWithBalances.filter((balanceType) => balanceType.balance.toNumber() > 0)
-  console.log(farmsWithBalances)
-  console.log(poolsWithBalances)
-  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const farmsbalancesWithValue = farmsWithBalances.filter((balanceType) => balanceType.balance.toNumber() > 0 && balanceType.pid > 0)
+  const poolsbalancesWithValue = poolsWithBalances.filter((balanceType) => balanceType.balance.toNumber() > 0)
+  const { onReward } = useAllHarvest(farmsbalancesWithValue.map((fwb) => fwb.pid))
+  const { onPoolReward } = usePoolAllHarvest(poolsbalancesWithValue.map((pwb) => pwb.sousId))
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
     try {
       await onReward()
+      await onPoolReward()
     } catch (error) {
       console.log(error)
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
       setPendingTx(false)
     }
-  }, [onReward])
+  }, [onReward, onPoolReward])
 
   return (
     <StyledFarmStakingCard>
@@ -100,12 +101,12 @@ const FarmedStakingCard = () => {
           {account ? (
             <Button
               id="harvest-all"
-              disabled={balancesWithValue.length <= 0 || pendingTx}
+              disabled={farmsbalancesWithValue.length + poolsbalancesWithValue.length <= 0 || pendingTx}
               onClick={harvestAllFarms}
             >
               {pendingTx
                 ? t('Collecting RNBO')
-                : t(`Harvest all (${balancesWithValue.length})`)}
+                : t(`Harvest all (${farmsbalancesWithValue.length + poolsbalancesWithValue.length})`)}
             </Button>
           ) : (
             <UnlockButton  />
