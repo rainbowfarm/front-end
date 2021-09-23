@@ -47,6 +47,12 @@ export const MobileColumnSchema: ColumnsDefTypes[] = [
     label: 'APR',
   },
   {
+    id: 5,
+    name: 'withdrawFee',
+    sortable: true,
+    label: 'Fees%',
+  },
+  {
     id: 6,
     name: 'details',
     sortable: true,

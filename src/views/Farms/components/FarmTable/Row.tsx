@@ -5,7 +5,7 @@ import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
-
+import { AlignLeft } from 'react-feather'
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
 import Earned, { EarnedProps } from './Earned'
@@ -124,7 +124,17 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                     </CellInner>
                   </td>
                 )
-              default:
+                case 'withdrawFee':
+                  return (
+                    <td key={key} width="50">
+                      <CellInner>
+                        <CellLayout label={t('Fees')}>
+                          <WithdrawFeeCell {...props.withdrawFee}/>
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  )
+                default:
                 return (
                   <td key={key}>
                     <CellInner>

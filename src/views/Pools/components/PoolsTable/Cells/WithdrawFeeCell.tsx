@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
@@ -18,6 +18,7 @@ const StyledCell = styled(BaseCell)`
 
 const WithdrawFeeCell: React.FC<WithdrawFeeCellProps> = ({ pool }) => {
   const { t } = useTranslation()
+  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints()
   const { sousId , userData } = pool
   const withdrawFees = ((userData.withdrawFees.toNumber() > 0 ? userData.withdrawFees.toNumber() : pool.poolWithdrawFee)/100)
 
@@ -25,7 +26,7 @@ const WithdrawFeeCell: React.FC<WithdrawFeeCellProps> = ({ pool }) => {
     <StyledCell role="cell">
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('Withdraw Fee %')}
+          {isXl ? t('Withdraw Fee %') : t('Fee %')}
         </Text>
           <Flex height="20px" alignItems="center">
             <Fees fontSize="16px" value={withdrawFees} decimals={1}/>

@@ -12,7 +12,7 @@ export interface FeeProps {
 }
 
 const FeeWrapper = styled.div`
-  min-width: 110px;
+  min-width: 10px;
   font-weight: 600;
   text-align: right;
   margin-right: 14px;
@@ -37,7 +37,7 @@ const WithdrawFeeCell: React.FC<FeeProps> = ({ userwithdrawFee,poolWithdrawFee }
   return (
     <Container>
       <FeeWrapper>
-      <Text>{withdrawFees.toFixed(2)}</Text>
+      <Text textAlign="left">{withdrawFees.toFixed(2)}</Text>
       </FeeWrapper>
     </Container>
   )
